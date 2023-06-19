@@ -30,12 +30,12 @@ public class Utente implements UserDetails {
     private String password;
     private String username;
 
-    // Relazione many-to-many con RuoloUtente
+    // Relazione many-to-many con Ruolo
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "utente_ruolo",
             joinColumns = @JoinColumn(name = "utente_id"),
             inverseJoinColumns = @JoinColumn(name = "ruolo_id"))
-    private Set<RuoloUtente> ruoli = new HashSet<>();
+    private Set<Ruolo> ruoli = new HashSet<>();
 
     public Utente(String cognome, String email, String nome, String password, String username) {
         this.cognome = cognome;
@@ -48,8 +48,8 @@ public class Utente implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
-        for (RuoloUtente ruoloUtente : ruoli) {
-            authorities.add(new SimpleGrantedAuthority(ruoloUtente.getNome().name()));
+        for (Ruolo ruolo : ruoli) {
+            authorities.add(new SimpleGrantedAuthority(ruolo.getNome()));
         }
         return authorities;
     }
