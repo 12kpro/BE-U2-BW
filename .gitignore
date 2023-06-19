@@ -34,3 +34,5 @@ build/
 env.properties
 /.$Diagram.drawio.bkp
 /.$Diagram.drawio.dtmp
+/src/main/resources/comuni-italiani.csv
+/src/main/resources/province-italiane.csv
