@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @Entity
@@ -15,7 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Provincia {
     @Id
-    private int id;
+    private UUID id = UUID.randomUUID();
     @Column(length = 255)
     private String nome;
     @Column(length = 255)
@@ -23,8 +25,7 @@ public class Provincia {
     @Column(length = 255)
     private String regione;
 
-    public Provincia(int id, String nome, String sigla, String regione) {
-        this.id = id;
+    public Provincia( String nome, String sigla, String regione) {
         this.nome = nome;
         this.sigla = sigla;
         this.regione = regione;

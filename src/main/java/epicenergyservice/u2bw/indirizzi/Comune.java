@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @Entity
@@ -12,18 +14,14 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Comune {
     @Id
-    private Integer id;
+    private UUID id = UUID.randomUUID();
     @Column(length = 255)
     private String nome;
 
-    // relazione //
-
     @ManyToOne
-    @JoinColumn(name = "provincia_id")
     private Provincia provincia;
 
-    public Comune(Integer id, String nome, Provincia provincia) {
-        this.id = id;
+    public Comune(String nome, Provincia provincia) {
         this.nome = nome;
         this.provincia = provincia;
     }

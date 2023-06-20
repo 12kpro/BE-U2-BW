@@ -1,5 +1,5 @@
 ## Mauro
-- [ ] Importazione CSV
+- [x] Importazione CSV
 
 #### Comuni
 Endpoint /comuni
