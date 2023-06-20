@@ -41,18 +41,20 @@ Autorizzazioni: USER GET, ADMIN ALL
 - [ ] POST
 - [ ] PUT
 - [ ] DELETE
-
-
-## Alfonso
-
 #### Fatture
-Endpoint /fatture
-Autorizzazioni: USER GET, ADMIN ALL
+- Endpoint /fatture
+  Autorizzazioni: USER GET, ADMIN ALL
 - [ ] GET all
 - [ ] GET by id
 - [ ] POST
 - [ ] PUT
 - [ ] DELETE
+
+
+## Alfonso
+
+#### Fatture
+
 
 #### Tipi fatture
 Endpoint /tipofatture
