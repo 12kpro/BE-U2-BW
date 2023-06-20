@@ -12,5 +12,5 @@ public interface TipoClienteRepository extends JpaRepository<TipoCliente, UUID> 
     List<TipoCliente> findByNome(String nome);
     @Query("SELECT t FROM TipoCliente t WHERE lower(t.nome) = lower(?1)")
     TipoCliente findByNomeIgnoreCase(String nome);
-    
+
 }
