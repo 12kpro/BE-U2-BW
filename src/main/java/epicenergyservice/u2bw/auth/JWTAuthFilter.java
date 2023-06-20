@@ -6,7 +6,7 @@ package epicenergyservice.u2bw.auth;
 import epicenergyservice.u2bw.exceptions.NotFoundException;
 import epicenergyservice.u2bw.exceptions.UnauthorizedException;
 import epicenergyservice.u2bw.utenti.Utente;
-import epicenergyservice.u2bw.utenti.UtenteService;
+import epicenergyservice.u2bw.utenti.services.UtenteService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

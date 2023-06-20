@@ -69,7 +69,7 @@ Autorizzazioni: USER GET, ADMIN ALL
 
 ## Giuseppe
 
-- [ ] Verifica endpoint per autenticazione e registrazione utenti.
+- [x] Verifica endpoint per autenticazione e registrazione utenti.
 - [ ] Verifica gestione ruoli su endpoint /users
 
 

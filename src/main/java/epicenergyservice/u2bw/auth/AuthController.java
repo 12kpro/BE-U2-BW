@@ -5,7 +5,7 @@ import epicenergyservice.u2bw.auth.payloads.AuthenticationSuccessfullPayload;
 import epicenergyservice.u2bw.exceptions.NotFoundException;
 import epicenergyservice.u2bw.exceptions.UnauthorizedException;
 import epicenergyservice.u2bw.utenti.Utente;
-import epicenergyservice.u2bw.utenti.UtenteService;
+import epicenergyservice.u2bw.utenti.services.UtenteService;
 import epicenergyservice.u2bw.utenti.payloads.UtenteCreatePayload;
 import epicenergyservice.u2bw.utenti.payloads.UtenteLoginPayload;
 import org.springframework.beans.factory.annotation.Autowired;
