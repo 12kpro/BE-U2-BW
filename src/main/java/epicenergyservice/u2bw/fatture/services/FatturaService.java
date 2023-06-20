@@ -5,6 +5,7 @@ import epicenergyservice.u2bw.fatture.repositories.FatturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -32,5 +33,35 @@ public class FatturaService {
 
     public void deleteFattura(UUID id) {
         fatturaRepository.deleteById(id);
+    }
+
+    public Fattura createFattura(Fattura fattura) {
+        //generiamo un nuovo uuid randomico, poi validiamo la fattura
+        UUID fatturaId = UUID.randomUUID();
+        fattura.setId(fatturaId);
+
+        if (fattura.getImporto() == null || fattura.getImporto().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("L'importo della fattura deve essere specificato e maggiore di zero.");
+        }
+        if (fattura.getCliente() == null) {
+            throw new IllegalArgumentException("La fattura deve essere associata a un cliente.");
+        }
+        return fatturaRepository.save(fattura);
+    }
+
+    public Fattura updateFattura(UUID fatturaId, Fattura updatedFattura) {
+
+        Fattura existingFattura = fatturaRepository.findById(fatturaId)
+                .orElseThrow(() -> new IllegalArgumentException("Fattura non trovata"));
+        existingFattura.setAnno(updatedFattura.getAnno());
+        existingFattura.setData(updatedFattura.getData());
+        existingFattura.setImporto(updatedFattura.getImporto());
+        existingFattura.setNumero(updatedFattura.getNumero());
+
+        return fatturaRepository.save(existingFattura);
+    }
+
+    public Optional<Fattura> getFatturaPerNumero(int numeroFattura) {
+        return fatturaRepository.findByNumero(numeroFattura);
     }
 }

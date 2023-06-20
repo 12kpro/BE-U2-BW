@@ -21,4 +21,7 @@ public interface FatturaRepository extends JpaRepository<Fattura, UUID> {
 
     @Query("SELECT f FROM Fattura f WHERE f.cliente.id = :clienteId")
     List<Fattura> findByClienteId(@Param("clienteId") UUID clienteId);
+
+    @Query("SELECT f FROM Fattura f WHERE f.numero = :numero")
+    Optional<Fattura> findByNumero(int numero);
 }
