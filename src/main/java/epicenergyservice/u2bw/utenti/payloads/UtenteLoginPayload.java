@@ -5,5 +5,5 @@ import lombok.Getter;
 @Getter
 public class UtenteLoginPayload {
 String username;
-String Password;
+String password;
 }
