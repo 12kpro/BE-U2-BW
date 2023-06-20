@@ -64,4 +64,6 @@ public class FatturaService {
     public Optional<Fattura> getFatturaPerNumero(int numeroFattura) {
         return fatturaRepository.findByNumero(numeroFattura);
     }
+
+
 }

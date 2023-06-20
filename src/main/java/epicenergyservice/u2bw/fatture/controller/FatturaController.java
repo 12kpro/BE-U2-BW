@@ -40,12 +40,12 @@ public class FatturaController {
         }
     }
 
-    @PostMapping
+    /*@PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Fattura> createFattura(@RequestBody Fattura fattura) {
         Fattura createdFattura = fatturaService.createFattura(fattura);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdFattura);
-    }
+    }*/
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
