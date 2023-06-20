@@ -22,7 +22,7 @@ public class UtenteService {
         utenteRepo.findByEmail(u.getEmail()).ifPresent(user -> {
             throw new BadRequestException("Email " + user.getEmail() + " already in use!");
         });
-        Utente newUser = new Utente(u.getName(), u.getSurname(), u.getUserName(),u.getEmail(), u.getPassword());
+        Utente newUser = new Utente(u.getCognome(),u.getEmail(),u.getNome(),u.getPassword(), u.getUsername());
         return utenteRepo.save(newUser);
     }
 
