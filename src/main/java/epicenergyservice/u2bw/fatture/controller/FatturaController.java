@@ -1,5 +1,7 @@
 package epicenergyservice.u2bw.fatture.controller;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import epicenergyservice.u2bw.exceptions.NotFoundException;
 import epicenergyservice.u2bw.fatture.Fattura;
 import epicenergyservice.u2bw.fatture.services.FatturaService;
@@ -18,17 +20,21 @@ import java.util.UUID;
 public class FatturaController {
 
     private final FatturaService fatturaService;
+    private final Pageable pageable;
 
     @Autowired
-    public FatturaController(FatturaService fatturaService) {
+    public FatturaController(FatturaService fatturaService, Pageable pageable) {
         this.fatturaService = fatturaService;
+        this.pageable = pageable;
     }
 
-    @GetMapping
-    public ResponseEntity<List<Fattura>> getAllFatture() {
-        List<Fattura> fatture = fatturaService.getAllFattura();
+
+    /*@GetMapping
+    public ResponseEntity<Page<Fattura>> getAllFatture(Pageable pageable) {
+        Page<Fattura> fatture = fatturaService.getAllFattura(pageable);
         return ResponseEntity.ok(fatture);
-    }
+    }*/
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Fattura>> getFatturaById(@PathVariable UUID id) {

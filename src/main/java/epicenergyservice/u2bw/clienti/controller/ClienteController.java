@@ -1,5 +1,7 @@
 package epicenergyservice.u2bw.clienti.controller;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import epicenergyservice.u2bw.clienti.Cliente;
 import epicenergyservice.u2bw.clienti.repositories.ClienteRepository;
 import epicenergyservice.u2bw.exceptions.NotFoundException;
@@ -19,8 +21,8 @@ public class ClienteController {
     private ClienteRepository clienteRepository;
 
     @GetMapping
-    public ResponseEntity<List<Cliente>> getAllClienti() {
-        List<Cliente> clienti = clienteRepository.findAll();
+    public ResponseEntity<Page<Cliente>> getAllClienti(Pageable pageable) {
+        Page<Cliente> clienti = clienteRepository.findAll(pageable);
         return ResponseEntity.ok(clienti);
     }
 
