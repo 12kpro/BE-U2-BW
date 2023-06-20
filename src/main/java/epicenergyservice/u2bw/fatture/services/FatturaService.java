@@ -1,11 +1,13 @@
 package epicenergyservice.u2bw.fatture.services;
 
+import epicenergyservice.u2bw.clienti.Cliente;
 import epicenergyservice.u2bw.fatture.Fattura;
 import epicenergyservice.u2bw.fatture.repositories.FatturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,21 +33,19 @@ public class FatturaService {
         return fatturaRepository.save(fattura);
     }
 
-    public void deleteFattura(UUID id) {
+    public boolean deleteFattura(UUID id) {
         fatturaRepository.deleteById(id);
+        return false;
     }
 
-    public Fattura createFattura(Fattura fattura) {
-        //generiamo un nuovo uuid randomico, poi validiamo la fattura
-        UUID fatturaId = UUID.randomUUID();
-        fattura.setId(fatturaId);
+    public Fattura createFattura(int anno, LocalDateTime data, Double importo, int numero, Cliente cliente) {
+        Fattura fattura = new Fattura();
+        fattura.setAnno(anno);
+        fattura.setData(data);
+        fattura.setImporto(importo);
+        fattura.setNumero(numero);
+        fattura.setCliente(cliente);
 
-        if (fattura.getImporto() == null || fattura.getImporto().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("L'importo della fattura deve essere specificato e maggiore di zero.");
-        }
-        if (fattura.getCliente() == null) {
-            throw new IllegalArgumentException("La fattura deve essere associata a un cliente.");
-        }
         return fatturaRepository.save(fattura);
     }
 

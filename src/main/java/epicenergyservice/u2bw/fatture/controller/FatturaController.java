@@ -77,4 +77,4 @@ public class FatturaController {
         return new ResponseEntity<>(fattura, HttpStatus.OK);
     }
 }
-}
+
