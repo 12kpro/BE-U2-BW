@@ -53,11 +53,11 @@ Autorizzazioni: USER GET, ADMIN ALL
 #### Stato fatture
 Endpoint /statofatture
 Autorizzazioni: USER GET, ADMIN ALL
-- [ ] GET all
-- [ ] GET by id
-- [ ] POST
-- [ ] PUT
-- [ ] DELETE
+- [x] GET all
+- [x] GET by id
+- [x] POST
+- [x] PUT
+- [x] DELETE
 
 
 ## Alfonso
