@@ -50,13 +50,6 @@ Autorizzazioni: USER GET, ADMIN ALL
 - [x] PUT
 - [x] DELETE
 - [x] implementa metodi fatture
-
-
-## Alfonso
-
-
-
-
 #### Tipi fatture
 Endpoint /tipofatture
 Autorizzazioni: USER GET, ADMIN ALL
@@ -65,6 +58,14 @@ Autorizzazioni: USER GET, ADMIN ALL
 - [ ] POST
 - [ ] PUT
 - [ ] DELETE
+
+
+## Alfonso
+
+
+
+
+
 
 ## Giuseppe
 
