@@ -27,33 +27,34 @@ Autorizzazioni: USER GET, ADMIN ALL
 #### Clienti
 Endpoint /clienti
 Autorizzazioni: USER GET, ADMIN ALL
-- [ ] GET all
-- [ ] GET by id
-- [ ] POST
-- [ ] PUT
-- [ ] DELETE
+- [x] GET all
+- [x] GET by id
+- [x] POST
+- [x] PUT
+- [x] DELETE
 
 #### Tipi cliente
 Endpoint /tipocliente
 Autorizzazioni: USER GET, ADMIN ALL
-- [ ] GET all
-- [ ] GET by id
-- [ ] POST
-- [ ] PUT
-- [ ] DELETE
+- [x] GET all
+- [x] GET by id
+- [x] POST
+- [x] PUT
+- [x] DELETE
 #### Fatture
 - Endpoint /fatture
   Autorizzazioni: USER GET, ADMIN ALL
-- [ ] GET all
-- [ ] GET by id
-- [ ] POST
-- [ ] PUT
-- [ ] DELETE
+- [x] GET all
+- [x] GET by id
+- [x] POST
+- [x] PUT
+- [x] DELETE
+- [x] implementa metodi fatture
 
 
 ## Alfonso
 
-#### Fatture
+
 
 
 #### Tipi fatture
