@@ -1,6 +1,7 @@
 package epicenergyservice.u2bw.auth;
 
 
+import epicenergyservice.u2bw.auth.payloads.AuthenticationSuccessfullPayload;
 import epicenergyservice.u2bw.exceptions.NotFoundException;
 import epicenergyservice.u2bw.exceptions.UnauthorizedException;
 import epicenergyservice.u2bw.utenti.Utente;
@@ -37,10 +38,10 @@ public class AuthController {
     public ResponseEntity<AuthenticationSuccessfullPayload> login(@RequestBody UtenteLoginPayload body)
             throws NotFoundException {
 
-        Utente user = utenteService.findByUserName(body.getUserName());
+        Utente utente = utenteService.findByUserName(body.getUserName());
 
         String plainPW = body.getPassword();
-        String hashedPW = user.getPassword();
+        String hashedPW = utente.getPassword();
 
         if (!bcrypt.matches(plainPW, hashedPW))
             throw new UnauthorizedException("Credenziali non valide");

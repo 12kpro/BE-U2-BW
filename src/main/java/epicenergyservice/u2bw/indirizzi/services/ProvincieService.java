@@ -1,6 +1,7 @@
 package epicenergyservice.u2bw.indirizzi.services;
 
 import epicenergyservice.u2bw.indirizzi.Provincia;
+import epicenergyservice.u2bw.indirizzi.repositories.ProvincieRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -17,7 +18,7 @@ import java.io.Reader;
 public class ProvincieService {
 
     @Autowired
-    private ProvincieService provincieService;
+    private ProvincieRepository provincieRepository;
 
     public void importCsv(MultipartFile file) throws IOException {
         try (Reader reader = new InputStreamReader(file.getInputStream())) {

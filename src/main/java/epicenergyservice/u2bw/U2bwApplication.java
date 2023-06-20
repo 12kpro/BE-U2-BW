@@ -17,11 +17,11 @@ public class U2bwApplication {
 	public static void main(String[] args) throws IOException {
 		SpringApplication.run(U2bwApplication.class, args);
 
-		try {
-			comuniService.importCsv("comuni-italiani.csv");
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+//		try {
+//			comuniService.importCsv("comuni-italiani.csv");
+//		} catch (IOException e) {
+//			throw new RuntimeException(e);
+//		}
 
 
 	}

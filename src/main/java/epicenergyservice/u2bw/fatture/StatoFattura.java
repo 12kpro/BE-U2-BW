@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
+@Table(name="stato_fatture")
 @Getter
 @Setter
 public class StatoFattura {

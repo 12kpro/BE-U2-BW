@@ -21,6 +21,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DialectOverride;
+import org.hibernate.annotations.Formula;
 
 @Entity
 @Table(name="clienti")
@@ -31,34 +33,48 @@ import lombok.NoArgsConstructor;
 public class Cliente {
     @Id
     private UUID id = UUID.randomUUID();
-    @Column(nullable = false)
+    @Column(nullable = false, length = 255)
     private String nomeContatto;
+    @Column(length = 255)
     private String cognomeContatto;
+    @Column(length = 255)
     private String emailContatto;
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false,unique = true, columnDefinition = "timestamp without time zone")
     private String dataInserimento;
+    @Column(columnDefinition = "timestamp without time zone")
     private String dataUltimoContatto;
+    @Column(length = 255)
     private String email;
-
+    // TODO campo calcolato? Fare sub query
+    @Formula("")
+    @Column(columnDefinition = "numeric(19,2)")
     private String fatturatoAnnuale;
     @Column(nullable = false)
     private String partitaIva;
     @Column(nullable = false)
     private String pec;
+    @Column(length = 255)
     private String ragioneSociale;
+    @Column(length = 255)
     private String telefono;
+    @Column(length = 255)
     private String telefonoContatto;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "tipo_cliente_id")
     private TipoCliente tipoCliente;
-    @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JsonIgnoreProperties({"cliente"})
-    private List<Indirizzo> indirizzi;
 
     @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnoreProperties({"cliente"})
     private List<Fattura> fatture;
+
+    @ManyToOne
+    @JoinColumn(name = "indirizzo_sede_legale_id")
+    private Indirizzo indirizzoSedeLegale;
+
+    @ManyToOne
+    @JoinColumn(name = "indirizzo_sede_operativa_id")
+    private Indirizzo indirizzoSedeOperativa;
 }
 
 

@@ -9,11 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Data
@@ -21,8 +17,8 @@ import java.util.UUID;
 @Table(name = "utenti")
 public class Utente implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    //@GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id = UUID.randomUUID();
 
     private String cognome;
     private String email;
@@ -30,12 +26,18 @@ public class Utente implements UserDetails {
     private String password;
     private String username;
 
-    // Relazione many-to-many con Ruolo
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "utente_ruolo",
+    @ManyToMany
+    @JoinTable(name = "utenti_ruoli",
             joinColumns = @JoinColumn(name = "utente_id"),
             inverseJoinColumns = @JoinColumn(name = "ruolo_id"))
-    private Set<Ruolo> ruoli = new HashSet<>();
+    private Set<Ruolo> ruoli = new LinkedHashSet<>();
+
+//    // Relazione many-to-many con Ruolo
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(name = "utente_ruolo",
+//            joinColumns = @JoinColumn(name = "utente_id"),
+//            inverseJoinColumns = @JoinColumn(name = "ruolo_id"))
+//    private Set<Ruolo> ruoli = new HashSet<>();
 
     public Utente(String cognome, String email, String nome, String password, String username) {
         this.cognome = cognome;

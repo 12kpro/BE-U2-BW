@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 @Entity
+@Table(name="fatture")
 @Getter
 @Setter
 public class Fattura {
@@ -16,14 +17,18 @@ public class Fattura {
     private UUID id = UUID.randomUUID();
 
     private int anno;
+    @Column(columnDefinition = "timestamp without time zone")
     private LocalDateTime data;
-    private BigDecimal importo;
+    @Column(columnDefinition = "numeric(19,2)")
+    private Double importo;
     private int numero;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    @OneToOne(mappedBy = "fattura", cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "stato_fattura_id")
     private StatoFattura statoFattura;
+
 }
