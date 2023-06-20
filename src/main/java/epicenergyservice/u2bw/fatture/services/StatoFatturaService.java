@@ -32,4 +32,12 @@ public class StatoFatturaService {
     public void deleteStatoFattura(Long id) {
         statoFatturaRepository.deleteById(id);
     }
+
+    public StatoFattura createStatoFattura(StatoFattura statoFattura) {
+        return statoFatturaRepository.save(statoFattura);
+    }
+    public StatoFattura updateStatoFattura(StatoFattura statoFattura) {
+        return statoFatturaRepository.save(statoFattura);
+    }
 }
+

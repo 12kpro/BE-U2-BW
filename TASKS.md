@@ -50,8 +50,8 @@ Autorizzazioni: USER GET, ADMIN ALL
 - [x] PUT
 - [x] DELETE
 - [x] implementa metodi fatture
-#### Tipi fatture
-Endpoint /tipofatture
+#### Stato fatture
+Endpoint /statofatture
 Autorizzazioni: USER GET, ADMIN ALL
 - [ ] GET all
 - [ ] GET by id
