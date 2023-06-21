@@ -1,7 +1,9 @@
 package epicenergyservice.u2bw.indirizzi.services;
 
+import epicenergyservice.u2bw.exceptions.BadRequestException;
 import epicenergyservice.u2bw.exceptions.NotFoundException;
 
+import epicenergyservice.u2bw.indirizzi.Comune;
 import epicenergyservice.u2bw.indirizzi.Indirizzo;
 import epicenergyservice.u2bw.indirizzi.payloads.IndirizzoCreatePayload;
 import epicenergyservice.u2bw.indirizzi.repositories.IndirizzoRepository;
@@ -20,9 +22,17 @@ public class IndirizzoService {
     @Autowired
     private IndirizzoRepository indirizzoRepository;
 
+    @Autowired
+    ComuniService comuniService;
+
     public Indirizzo create(IndirizzoCreatePayload i) {
-        Indirizzo newIndirizzo = new Indirizzo(i.getVia(), i.getCivico(), i.getLocalità(), i.getCap(), i.getComune());
-        return indirizzoRepository.save(newIndirizzo);
+        indirizzoRepository.findByCapAndCivicoAndLocalitaAndViaAndComune_Id(i.getCap(),i.getCivico(),i.getLocalità(),i.getVia(),i.getComune()).ifPresent(indirizzo -> {
+            throw new BadRequestException("indirizzo already in use!");
+        });
+      Comune c = comuniService.findById(i.getComune()) ;
+
+        Indirizzo indirizzo= new Indirizzo(i.getVia(), i.getCivico(), i.getLocalità(), i.getCap(), c);
+        return indirizzoRepository.save( indirizzo);
     }
 
     public Page<Indirizzo> find(int page, int size, String sortBy) {

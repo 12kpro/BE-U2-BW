@@ -26,11 +26,11 @@ public class Indirizzo {
     /// relazione ////
 
     @ManyToOne
-    private String comune;
+    private Comune comune;
 
 
 
-    public Indirizzo(String via, String civico, String località, String cap, String comune) {
+    public Indirizzo(String via, String civico, String località, String cap, Comune comune) {
         this.via = via;
         this.civico = civico;
         this.localita = località;

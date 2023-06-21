@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-
+import java.util.UUID;
 
 
 //Un indirizzo Ã¨ composto da
@@ -31,7 +31,7 @@ public class IndirizzoCreatePayload {
     String cap;
     @NotNull(message = "il comune è obbligatorio")
     @Size(min = 3, max = 30, message = "Nome min 3 caratteri, massimo 30")
-    String comune;
+    UUID comune;
 
 
 
@@ -41,7 +41,7 @@ public class IndirizzoCreatePayload {
         this.civico = civico;
         this.località = località;
         this.cap = cap;
-        this.comune = comune;
+        this.comune = UUID.fromString(comune);
     }
 
 }
