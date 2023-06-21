@@ -11,66 +11,77 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
-//@RestController
+@RestController
 @RequestMapping("/fatture")
-@PreAuthorize("hasRole('ADMIN') or hasRole('Fattura')")
+@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 public class FatturaController {
 
-//    Deve essere possibile filtrare le fatture per
-// TODO   Data
-// TODO   Anno
-// TODO   Range di importi
+    private final FatturaService fatturaService;
 
     @Autowired
-    private FatturaService fatturaService;
+    public FatturaController(FatturaService fatturaService) {
+        this.fatturaService = fatturaService;
+    }
 
     @GetMapping("")
-    public Page<Fattura> getFattura(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
-                                 @RequestParam(defaultValue = "id") String sortBy) {
-        return fatturaService.find(page, size, sortBy);
+    public Page<Fattura> getFatture(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(required = false) LocalDateTime data,
+            @RequestParam(required = false) Integer anno,
+            @RequestParam(required = false) BigDecimal minImporto,
+            @RequestParam(required = false) BigDecimal maxImporto
+    ) {
+        return fatturaService.find(page, size, sortBy, data, anno, minImporto, maxImporto);
     }
 
     @GetMapping("/{fatturaId}")
-    public Fattura getFattura(@PathVariable UUID fatturaId) throws Exception {
+    public Fattura getFattura(@PathVariable UUID fatturaId) throws NotFoundException {
         return fatturaService.findById(fatturaId);
     }
 
     @PostMapping("")
-    @PostAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public Fattura saveFattura(@RequestBody @Validated FatturaCreatePayload body) {
         return fatturaService.create(body);
     }
 
     @PutMapping("/{fatturaId}")
-    @PostAuthorize("hasRole('ADMIN')")
-    public Fattura updateFattura(@PathVariable UUID fatturaId, @RequestBody Fattura body) throws Exception {
+    @PreAuthorize("hasRole('ADMIN')")
+    public Fattura updateFattura(@PathVariable UUID fatturaId, @RequestBody Fattura body) throws NotFoundException {
         return fatturaService.findByIdAndUpdate(fatturaId, body);
     }
 
     @DeleteMapping("/{fatturaId}")
-    @PostAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteFattura(@PathVariable UUID fatturaId) throws NotFoundException {
         fatturaService.findByIdAndDelete(fatturaId);
     }
 
-
-
-    ///EXTRA
     @GetMapping("/cliente/{id}")
-    public Page<Fattura> getFatturaByClienteId(@PathVariable UUID id, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
-                                               @RequestParam(defaultValue = "id") String sortBy) {
+    public Page<Fattura> getFattureByClienteId(
+            @PathVariable UUID id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy
+    ) {
         return fatturaService.findByClienteId(id, page, size, sortBy);
     }
 
     @GetMapping("/stato/{id}")
-    public Page<Fattura> getFatturaByStatoId(@PathVariable UUID id, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
-                                             @RequestParam(defaultValue = "id") String sortBy) {
+    public Page<Fattura> getFattureByStatoId(
+            @PathVariable UUID id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy
+    ) {
         return fatturaService.findByStatoId(id, page, size, sortBy);
     }
-
 }
-

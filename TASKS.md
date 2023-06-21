@@ -45,11 +45,11 @@ Autorizzazioni: USER GET, ADMIN ALL
   Autorizzazioni: USER GET, ADMIN ALL
 - [x] GET all
 - [x] GET by id
-- [ ] GET by cliente id
-- [ ] GET by stato id
-- [ ] GET by data
-- [ ] GET by anno
-- [ ] GET by importo (Between)
+- [x] GET by cliente id
+- [x] GET by stato id
+- [x] GET by data
+- [x] GET by anno
+- [x] GET by importo (Between)
 - [x] POST
 - [x] PUT
 - [x] DELETE

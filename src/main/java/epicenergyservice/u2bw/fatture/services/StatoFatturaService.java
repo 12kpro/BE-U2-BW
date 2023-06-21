@@ -34,10 +34,29 @@ public class StatoFatturaService {
     }
 
     public StatoFattura createStatoFattura(StatoFattura statoFattura) {
-        return statoFatturaRepository.save(statoFattura);
-    }
-    public StatoFattura updateStatoFattura(StatoFattura statoFattura) {
-        return statoFatturaRepository.save(statoFattura);
-    }
-}
+        // Esempio di logica di business per la creazione di uno stato fattura
+        // Verifica se lo stato fattura esiste già per la fattura specificata
+        if (statoFattura.getFattura() != null) {
+            Fattura fattura = statoFattura.getFattura();
+            Optional<StatoFattura> existingStato = statoFatturaRepository.findByFattura(fattura);
+            if (existingStato.isPresent()) {
+                throw new IllegalArgumentException("Uno stato fattura esiste già per la fattura specificata.");
+            }
+        }
 
+        return statoFatturaRepository.save(statoFattura);
+    }
+
+    public StatoFattura updateStatoFattura(StatoFattura statoFattura) {
+        if (statoFattura.getFattura() != null) {
+            Fattura fattura = statoFattura.getFattura();
+            Optional<StatoFattura> existingStato = statoFatturaRepository.findByFattura(fattura);
+            if (existingStato.isEmpty()) {
+                throw new IllegalArgumentException("Non la fattura specificata.");
+            }
+        }
+
+        return statoFatturaRepository.save(statoFattura);
+    }
+
+}
