@@ -25,7 +25,7 @@ public class FatturaCreatePayload {
     public FatturaCreatePayload() {
     }
 
-    public int getNumero() {
+    public String getNumero() {
         return numero;
     }
 

@@ -2,8 +2,11 @@ package epicenergyservice.u2bw.fatture.services;
 
 import epicenergyservice.u2bw.exceptions.NotFoundException;
 import epicenergyservice.u2bw.fatture.Fattura;
+import epicenergyservice.u2bw.fatture.StatoFattura;
 import epicenergyservice.u2bw.fatture.payloads.FatturaCreatePayload;
 import epicenergyservice.u2bw.fatture.repositories.FatturaRepository;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +18,8 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
+@Getter
+@Setter
 public class FatturaService {
     private final FatturaRepository fatturaRepository;
 
@@ -46,6 +51,7 @@ public class FatturaService {
         fattura.setData(payload.getData());
         fattura.setImporto(payload.getImporto().doubleValue());
         fattura.setNumero(payload.getNumero());
+        fattura.setCliente(payload.getCliente()); // Imposta il cliente correttamente
 
         return fatturaRepository.save(fattura);
     }
@@ -55,10 +61,14 @@ public class FatturaService {
         Fattura fattura = fatturaRepository.findById(fatturaId)
                 .orElseThrow(() -> new NotFoundException("Fattura non trovata"));
 
-        fattura.setStato(payload.getStato());
+        StatoFattura statoFattura = new StatoFattura();
+        statoFattura.setStato(payload.getStato());
+
+        fattura.setStatoFattura(statoFattura);
 
         return fatturaRepository.save(fattura);
     }
+
 
     public void deleteFattura(UUID fatturaId) throws NotFoundException {
         if (!fatturaRepository.existsById(fatturaId)) {

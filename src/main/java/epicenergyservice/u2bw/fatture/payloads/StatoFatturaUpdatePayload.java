@@ -10,6 +10,9 @@ import jakarta.validation.constraints.Size;
 @Getter
 @Setter
 public class StatoFatturaUpdatePayload {
+    @NotNull(message = "L'ID è obbligatorio")
+    private Long id;
+
     @NotNull(message = "Il codice è obbligatorio")
     @NotBlank(message = "Il codice non può essere vuoto")
     @Size(max = 10, message = "Il codice può contenere al massimo 10 caratteri")
@@ -20,6 +23,14 @@ public class StatoFatturaUpdatePayload {
     private String descrizione;
 
     public StatoFatturaUpdatePayload() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getCodice() {
