@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/utenti")
 @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 
 // TODO Verificare il funzionamento per utenti con più ruoli

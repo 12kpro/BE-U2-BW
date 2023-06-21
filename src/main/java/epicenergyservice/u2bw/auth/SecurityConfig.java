@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-//@EnableMethodSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
     @Autowired
     JWTAuthFilter jwtAuthFilter;
@@ -33,7 +33,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> auth.requestMatchers("/auth/**").permitAll());
         // TODO modificare accesso solo per utenti ADMIN
         http.authorizeHttpRequests(auth -> auth.requestMatchers("/import/**").authenticated());
-        http.authorizeHttpRequests(auth -> auth.requestMatchers("/users/**").authenticated());
+        http.authorizeHttpRequests(auth -> auth.requestMatchers("/utenti/**").authenticated());
+        http.authorizeHttpRequests(auth -> auth.requestMatchers("/ruoli/**").authenticated());
 
         //http.addFilterBefore(exceptionHandlerFilter, JWTAuthFilter.class);
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

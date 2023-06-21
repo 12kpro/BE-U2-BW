@@ -1,27 +1,28 @@
 package epicenergyservice.u2bw.fatture.repositories;
 
 import epicenergyservice.u2bw.fatture.Fattura;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface FatturaRepository extends JpaRepository<Fattura, UUID> {
+    Page<Fattura> findByCliente_Id(UUID id, Pageable pageable);
 
-    @Query("SELECT f FROM Fattura f")
-    List<Fattura> findAll();
+    Page<Fattura> findByStatoFattura_Id(UUID id, Pageable pageable);
 
-    @Query("SELECT f FROM Fattura f WHERE f.id = :id")
-    Optional<Fattura> findById(@Param("id") UUID id);
+    Page<Fattura> findByAnno(int anno, Pageable pageable);
 
-    @Query("SELECT f FROM Fattura f WHERE f.cliente.id = :clienteId")
-    List<Fattura> findByClienteId(@Param("clienteId") UUID clienteId);
+    Page<Fattura> findByData(LocalDateTime data, Pageable pageable);
 
-    @Query("SELECT f FROM Fattura f WHERE f.numero = :numero")
-    Optional<Fattura> findByNumero(int numero);
+    Page<Fattura> findByImportoBetween(Double importoStart, Double importoEnd);
+
 }
