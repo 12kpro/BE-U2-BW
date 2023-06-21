@@ -31,7 +31,6 @@ public class SecurityConfig {
         http.csrf(c -> c.disable());
 
         http.authorizeHttpRequests(auth -> auth.requestMatchers("/auth/**").permitAll());
-        // TODO modificare accesso solo per utenti ADMIN
         http.authorizeHttpRequests(auth -> auth.requestMatchers("/import/**").authenticated());
         http.authorizeHttpRequests(auth -> auth.requestMatchers("/utenti/**").authenticated());
         http.authorizeHttpRequests(auth -> auth.requestMatchers("/ruoli/**").authenticated());

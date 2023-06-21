@@ -17,7 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Provincia {
     @Id
-    private UUID id = UUID.randomUUID();
+    private Integer id;
     @Column(length = 255)
     private String nome;
     @Column(length = 255)
@@ -25,7 +25,8 @@ public class Provincia {
     @Column(length = 255)
     private String regione;
 
-    public Provincia( String nome, String sigla, String regione) {
+    public Provincia(Integer id, String nome, String sigla, String regione) {
+        this.id = id;
         this.nome = nome;
         this.sigla = sigla;
         this.regione = regione;
