@@ -39,6 +39,8 @@ Autorizzazioni: USER GET, ADMIN ALL
 - [x] POST
 - [x] PUT
 - [x] DELETE
+- [x] payload tipo cliente
+- [x] fixata paginazione
 
 ## Alfonso
 #### Fatture
