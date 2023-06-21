@@ -18,7 +18,7 @@ public class ClientiCreatePayloads {
     @Size(min = 3, max = 30, message = "Nome min 3 caratteri, massimo 30")
     private String cognomeContatto;
 
-    @Size(max = 255, message = "L'email del contatto può contenere al massimo 255 caratteri")
+    @Size(max = 30, message = "L'email del contatto può contenere al massimo 30 caratteri")
     @Email(message = "Non hai inserito un indirizzo email valido per il contatto")
     private String emailContatto;
 
@@ -40,10 +40,10 @@ public class ClientiCreatePayloads {
     @Email(message = "Non hai inserito un indirizzo PEC valido")
     private String pec;
 
-    @Size(max = 15, message = "La ragione sociale può contenere al massimo 255 caratteri")
+    @Size(max = 15, message = "La ragione sociale può contenere al massimo 15 caratteri")
     private String ragioneSociale;
 
-    @Size(max = 20, message = "Il numero di telefono può contenere al massimo 255 caratteri")
+    @Size(max = 20, message = "Il numero di telefono può contenere al massimo 20 caratteri")
     private String telefono;
 
 
