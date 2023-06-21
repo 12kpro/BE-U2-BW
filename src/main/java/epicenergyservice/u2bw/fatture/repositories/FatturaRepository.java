@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -15,6 +16,10 @@ public interface FatturaRepository extends JpaRepository<Fattura, UUID> {
     Page<Fattura> findByCliente_Id(UUID id, Pageable pageable);
 
     Page<Fattura> findByStatoFattura_Id(UUID id, Pageable pageable);
+
+
+
+
 
     Page<Fattura> findByAnno(int anno, Pageable pageable);
 

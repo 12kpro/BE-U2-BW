@@ -46,6 +46,8 @@ public class FatturaService {
                 .orElseThrow(() -> new NotFoundException("Fattura non trovata"));
     }
 
+    //TODO Recuperare cliente da id
+    //TODO Recuperare stato fattura da stato default (non pagata)
     public Fattura createFattura(FatturaCreatePayload payload) {
         Fattura fattura = new Fattura();
         fattura.setData(payload.getData());
@@ -57,6 +59,7 @@ public class FatturaService {
     }
 
 
+    //TODO creare un payload per fattura update e passare data e stato
     public Fattura updateFattura(UUID fatturaId, FatturaCreatePayload payload) throws NotFoundException {
         Fattura fattura = fatturaRepository.findById(fatturaId)
                 .orElseThrow(() -> new NotFoundException("Fattura non trovata"));

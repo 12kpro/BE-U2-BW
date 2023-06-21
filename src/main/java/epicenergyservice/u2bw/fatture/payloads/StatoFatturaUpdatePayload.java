@@ -13,10 +13,6 @@ public class StatoFatturaUpdatePayload {
     @NotNull(message = "L'ID è obbligatorio")
     private Long id;
 
-    @NotNull(message = "Il codice è obbligatorio")
-    @NotBlank(message = "Il codice non può essere vuoto")
-    @Size(max = 10, message = "Il codice può contenere al massimo 10 caratteri")
-    private String codice;
 
     @NotNull(message = "La descrizione è obbligatoria")
     @NotBlank(message = "La descrizione non può essere vuota")
@@ -33,13 +29,6 @@ public class StatoFatturaUpdatePayload {
         this.id = id;
     }
 
-    public String getCodice() {
-        return codice;
-    }
-
-    public void setCodice(String codice) {
-        this.codice = codice;
-    }
 
     public String getDescrizione() {
         return descrizione;
