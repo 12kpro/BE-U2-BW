@@ -76,11 +76,11 @@ Autorizzazioni: USER GET, ADMIN ALL
 #### Indirizzi
 Endpoint /indirizzi
 Autorizzazioni: USER GET, ADMIN ALL
-- [ ] GET all
-- [ ] GET by id
-- [ ] POST
-- [ ] PUT
-- [ ] DELETE
+- [x] GET all
+- [x] GET by id
+- [x] POST
+- [x] PUT
+- [x] DELETE
 
 
 ### Endpoint

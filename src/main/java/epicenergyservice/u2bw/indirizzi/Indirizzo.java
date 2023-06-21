@@ -1,9 +1,15 @@
 package epicenergyservice.u2bw.indirizzi;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
+@Getter
+@Setter
 @Entity
+@NoArgsConstructor
 @Table(name="indirizzi")
 public class Indirizzo {
     @Id
@@ -21,4 +27,16 @@ public class Indirizzo {
 
     @ManyToOne
     private Comune comune;
+
+
+
+    public Indirizzo(String via, String civico, String località, String cap, Comune comune) {
+        this.via = via;
+        this.civico = civico;
+        this.localita = località;
+        this.cap = cap;
+        this.comune = comune;
+    }
+
 }
+
