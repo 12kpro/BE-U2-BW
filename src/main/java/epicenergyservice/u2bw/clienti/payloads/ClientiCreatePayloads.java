@@ -47,8 +47,7 @@ public class ClientiCreatePayloads {
     private String telefono;
 
 
-    @NotNull(message = "Il tipo cliente è obbligatorio")
-    private Long tipoClienteId;
+
 
 
 
@@ -66,8 +65,8 @@ public class ClientiCreatePayloads {
             @NotNull(message = "La partita IVA è obbligatoria") String partitaIva,
             @NotNull(message = "La PEC è obbligatoria") @Email(message = "Non hai inserito un indirizzo PEC valido") String pec,
             @Size(max = 15, message = "La ragione sociale può contenere al massimo 15 caratteri") String ragioneSociale,
-            @Size(max = 20, message = "Il numero di telefono può contenere al massimo 255 caratteri") String telefono,
-            @NotNull(message = "Il tipo cliente è obbligatorio") Long tipoClienteId
+            @Size(max = 20, message = "Il numero di telefono può contenere al massimo 255 caratteri") String telefono
+
 
     ) {
         this.nomeContatto = nomeContatto;
@@ -81,7 +80,7 @@ public class ClientiCreatePayloads {
         this.pec = pec;
         this.ragioneSociale = ragioneSociale;
         this.telefono = telefono;
-        this.tipoClienteId = tipoClienteId;
+
     }
 }
 
