@@ -1,61 +1,102 @@
 package epicenergyservice.u2bw.clienti.controller;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import epicenergyservice.u2bw.clienti.Cliente;
-import epicenergyservice.u2bw.clienti.repositories.ClienteRepository;
-import epicenergyservice.u2bw.exceptions.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import epicenergyservice.u2bw.clienti.services.ClienteService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.time.LocalDate;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/clienti")
 public class ClienteController {
-    @Autowired
-    private ClienteRepository clienteRepository;
 
-    @GetMapping
-    public ResponseEntity<Page<Cliente>> getAllClienti(Pageable pageable) {
-        Page<Cliente> clienti = clienteRepository.findAll(pageable);
-        return ResponseEntity.ok(clienti);
+    private final ClienteService clienteService;
+
+    public ClienteController(ClienteService clienteService) {
+        this.clienteService = clienteService;
     }
 
-    @GetMapping("/{id}")
+   /* @GetMapping("/{id}")
     public ResponseEntity<Cliente> getClienteById(@PathVariable UUID id) {
-        Cliente cliente = clienteRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Cliente non trovato con ID: " + id));
-        return ResponseEntity.ok(cliente);
+        Optional<Cliente> cliente = clienteService.findById(id);
+        return cliente.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }*/
+
+    @GetMapping("/nomecontatto")
+    public ResponseEntity<Page<Cliente>> getClienteByNomeContatto(
+            @RequestParam String nomeContatto,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<Cliente> result = clienteService.findByNomeContatto(nomeContatto, page, size);
+        return ResponseEntity.ok(result);
     }
 
-    @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Cliente> createCliente(@RequestBody Cliente cliente) {
-        Cliente nuovoCliente = clienteRepository.save(cliente);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuovoCliente);
+    @GetMapping("/email")
+    public ResponseEntity<Page<Cliente>> getClienteByEmail(
+            @RequestParam String email,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<Cliente> result = clienteService.findByEmail(email, page, size);
+        return ResponseEntity.ok(result);
     }
 
-    @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Cliente> updateCliente(@PathVariable UUID id, @RequestBody Cliente cliente) {
-        Cliente clienteEsistente = clienteRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Cliente non trovato con ID: " + id));
-        cliente.setId(id);
-        Cliente clienteAggiornato = clienteRepository.save(cliente);
-        return ResponseEntity.ok(clienteAggiornato);
+    @GetMapping("/fatturato")
+    public ResponseEntity<Page<Cliente>> filtraClientiPerFatturatoAnnuo(
+            @RequestParam double minFatturato,
+            @RequestParam double maxFatturato,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<Cliente> result = clienteService.filtraClientiPerFatturatoAnnuo(minFatturato, maxFatturato, page, size);
+        return ResponseEntity.ok(result);
     }
 
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> deleteCliente(@PathVariable UUID id) {
-        Cliente clienteEsistente = clienteRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Cliente non trovato con ID: " + id));
-        clienteRepository.delete(clienteEsistente);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/inserimento")
+    public ResponseEntity<Page<Cliente>> findByInserimento(
+            @RequestParam String dataInserimento,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        LocalDate parsedDate = LocalDate.parse(dataInserimento);
+        Page<Cliente> result = clienteService.findByInserimento(parsedDate, page, size);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/partname")
+    public ResponseEntity<Page<Cliente>> searchByPartName(
+            @RequestParam String partName,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<Cliente> result = clienteService.searchByPartName(partName, page, size);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/ultimocontatto")
+    public ResponseEntity<Page<Cliente>> findByUltimocontatto(
+            @RequestParam String ultimoContatto,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        LocalDate parsedDate = LocalDate.parse(ultimoContatto);
+        Page<Cliente> result = clienteService.findByUltimocontatto(parsedDate, page, size);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/provincia")
+    public ResponseEntity<Page<Cliente>> searchByProvincia(
+            @RequestParam String provincia,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<Cliente> result = clienteService.searchByProvincia(provincia, page, size);
+        return ResponseEntity.ok(result);
     }
 }
