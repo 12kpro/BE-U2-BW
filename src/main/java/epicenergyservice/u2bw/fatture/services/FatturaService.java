@@ -51,7 +51,7 @@ public class FatturaService {
         fattura.setData(payload.getData());
         fattura.setImporto(payload.getImporto().doubleValue());
         fattura.setNumero(payload.getNumero());
-        fattura.setCliente(payload.getCliente()); // Imposta il cliente correttamente
+        fattura.setCliente(payload.getCliente());
 
         return fatturaRepository.save(fattura);
     }
