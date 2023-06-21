@@ -1,5 +1,6 @@
 package epicenergyservice.u2bw.fatture.services;
 
+import epicenergyservice.u2bw.fatture.Fattura;
 import epicenergyservice.u2bw.fatture.StatoFattura;
 import epicenergyservice.u2bw.fatture.repositories.StatoFatturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +35,7 @@ public class StatoFatturaService {
     }
 
     public StatoFattura createStatoFattura(StatoFattura statoFattura) {
-        // Esempio di logica di business per la creazione di uno stato fattura
-        // Verifica se lo stato fattura esiste già per la fattura specificata
+
         if (statoFattura.getFattura() != null) {
             Fattura fattura = statoFattura.getFattura();
             Optional<StatoFattura> existingStato = statoFatturaRepository.findByFattura(fattura);
@@ -52,11 +52,10 @@ public class StatoFatturaService {
             Fattura fattura = statoFattura.getFattura();
             Optional<StatoFattura> existingStato = statoFatturaRepository.findByFattura(fattura);
             if (existingStato.isEmpty()) {
-                throw new IllegalArgumentException("Non la fattura specificata.");
+                throw new IllegalArgumentException("Non esiste la fattura specificata.");
             }
         }
 
         return statoFatturaRepository.save(statoFattura);
     }
-
 }

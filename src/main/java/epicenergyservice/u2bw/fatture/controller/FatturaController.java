@@ -3,6 +3,7 @@ package epicenergyservice.u2bw.fatture.controller;
 import org.springframework.data.domain.Page;
 import epicenergyservice.u2bw.exceptions.NotFoundException;
 import epicenergyservice.u2bw.fatture.Fattura;
+import epicenergyservice.u2bw.fatture.payloads.FatturaCreatePayload;
 import epicenergyservice.u2bw.fatture.services.FatturaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,32 +38,32 @@ public class FatturaController {
             @RequestParam(required = false) BigDecimal minImporto,
             @RequestParam(required = false) BigDecimal maxImporto
     ) {
-        return fatturaService.find(page, size, sortBy, data, anno, minImporto, maxImporto);
+        return fatturaService.getFatture(page, size, sortBy, data, anno, minImporto, maxImporto);
     }
 
     @GetMapping("/{fatturaId}")
     public Fattura getFattura(@PathVariable UUID fatturaId) throws NotFoundException {
-        return fatturaService.findById(fatturaId);
+        return fatturaService.getFattura(fatturaId);
     }
 
     @PostMapping("")
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public Fattura saveFattura(@RequestBody @Validated FatturaCreatePayload body) {
-        return fatturaService.create(body);
+        return fatturaService.createFattura(body);
     }
 
     @PutMapping("/{fatturaId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public Fattura updateFattura(@PathVariable UUID fatturaId, @RequestBody Fattura body) throws NotFoundException {
-        return fatturaService.findByIdAndUpdate(fatturaId, body);
+    public Fattura updateFattura(@PathVariable UUID fatturaId, @RequestBody @Validated FatturaCreatePayload body) throws NotFoundException {
+        return fatturaService.updateFattura(fatturaId, body);
     }
 
     @DeleteMapping("/{fatturaId}")
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteFattura(@PathVariable UUID fatturaId) throws NotFoundException {
-        fatturaService.findByIdAndDelete(fatturaId);
+        fatturaService.deleteFattura(fatturaId);
     }
 
     @GetMapping("/cliente/{id}")
