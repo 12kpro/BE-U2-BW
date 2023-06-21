@@ -25,16 +25,17 @@ Autorizzazioni: USER GET, ADMIN ALL
 - [x] POST
 - [x] PUT
 - [x] DELETE
+- [x] GET by data inserimento
+- [x] GET by data ultimocontatto
+- [x] GET by fatturato
+- [x] GET by parte del nome
+- [x] ClienteCreatePayloads
 
 #### Tipi cliente
 Endpoint /tipocliente
 Autorizzazioni: USER GET, ADMIN ALL
 - [x] GET all
 - [x] GET by id
-- [ ] GET by data inserimento
-- [ ] GET by data ultimocontatto
-- [ ] GET by fatturato
-- [ ] GET by parte del nome
 - [x] POST
 - [x] PUT
 - [x] DELETE
