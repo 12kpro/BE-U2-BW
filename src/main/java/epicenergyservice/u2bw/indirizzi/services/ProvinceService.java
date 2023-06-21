@@ -23,16 +23,5 @@ public class ProvinceService {
     public Provincia findByNome(String n) throws NotFoundException {
         return provinceRepository.findByNome(n).orElseThrow(() -> new NotFoundException("Provincia:" + n + "non trovata!!"));
     }
-    public void importCsv(Boolean refresh ) throws IOException {
-        try (Reader reader = new InputStreamReader(new ClassPathResource("province-italiane.csv").getInputStream())) {
-            CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withDelimiter(';').withFirstRecordAsHeader());
-            if( refresh || provinceRepository.count() == 0) {
-                for (CSVRecord record : csvParser) {
-                    Provincia p = new Provincia(record.get(1), record.get(0), record.get(2));
-                    provinceRepository.save(p);
-                }
-            }
-        }
-    }
 
 }

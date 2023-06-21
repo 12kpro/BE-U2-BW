@@ -1,86 +1,76 @@
 package epicenergyservice.u2bw.fatture.controller;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import epicenergyservice.u2bw.exceptions.NotFoundException;
 import epicenergyservice.u2bw.fatture.Fattura;
 import epicenergyservice.u2bw.fatture.services.FatturaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
-@RestController
+//@RestController
 @RequestMapping("/fatture")
+@PreAuthorize("hasRole('ADMIN') or hasRole('Fattura')")
 public class FatturaController {
 
-    private final FatturaService fatturaService;
-    private final Pageable pageable;
+//    Deve essere possibile filtrare le fatture per
+// TODO   Data
+// TODO   Anno
+// TODO   Range di importi
 
     @Autowired
-    public FatturaController(FatturaService fatturaService, Pageable pageable) {
-        this.fatturaService = fatturaService;
-        this.pageable = pageable;
+    private FatturaService fatturaService;
+
+    @GetMapping("")
+    public Page<Fattura> getFattura(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+                                 @RequestParam(defaultValue = "id") String sortBy) {
+        return fatturaService.find(page, size, sortBy);
+    }
+
+    @GetMapping("/{fatturaId}")
+    public Fattura getFattura(@PathVariable UUID fatturaId) throws Exception {
+        return fatturaService.findById(fatturaId);
+    }
+
+    @PostMapping("")
+    @PostAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Fattura saveFattura(@RequestBody @Validated FatturaCreatePayload body) {
+        return fatturaService.create(body);
+    }
+
+    @PutMapping("/{fatturaId}")
+    @PostAuthorize("hasRole('ADMIN')")
+    public Fattura updateFattura(@PathVariable UUID fatturaId, @RequestBody Fattura body) throws Exception {
+        return fatturaService.findByIdAndUpdate(fatturaId, body);
+    }
+
+    @DeleteMapping("/{fatturaId}")
+    @PostAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteFattura(@PathVariable UUID fatturaId) throws NotFoundException {
+        fatturaService.findByIdAndDelete(fatturaId);
     }
 
 
-    /*@GetMapping
-    public ResponseEntity<Page<Fattura>> getAllFatture(Pageable pageable) {
-        Page<Fattura> fatture = fatturaService.getAllFattura(pageable);
-        return ResponseEntity.ok(fatture);
-    }*/
 
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Optional<Fattura>> getFatturaById(@PathVariable UUID id) {
-        Optional<Fattura> fattura = fatturaService.getFatturaById(id);
-        if (fattura != null) {
-            return ResponseEntity.ok(fattura);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    ///EXTRA
+    @GetMapping("/cliente/{id}")
+    public Page<Fattura> getFatturaByClienteId(@PathVariable UUID id, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+                                               @RequestParam(defaultValue = "id") String sortBy) {
+        return fatturaService.findByClienteId(id, page, size, sortBy);
     }
 
-    /*@PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Fattura> createFattura(@RequestBody Fattura fattura) {
-        Fattura createdFattura = fatturaService.createFattura(fattura);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdFattura);
-    }*/
-
-    @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Fattura> updateFattura(@PathVariable UUID id, @RequestBody Fattura fattura) {
-        Fattura updatedFattura = fatturaService.updateFattura(id, fattura);
-        if (updatedFattura != null) {
-            return ResponseEntity.ok(updatedFattura);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @GetMapping("/stato/{id}")
+    public Page<Fattura> getFatturaByStatoId(@PathVariable UUID id, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+                                             @RequestParam(defaultValue = "id") String sortBy) {
+        return fatturaService.findByStatoId(id, page, size, sortBy);
     }
 
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> deleteFattura(@PathVariable UUID id) {
-        boolean deleted = fatturaService.deleteFattura(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @GetMapping("/numero/{numeroFattura}")
-    public ResponseEntity<Fattura> getFatturaPerNumero(@PathVariable int numeroFattura) {
-        Fattura fattura = fatturaService.getFatturaPerNumero(numeroFattura)
-                .orElseThrow(() -> new NotFoundException("Fattura non trovata"));
-
-        return new ResponseEntity<>(fattura, HttpStatus.OK);
-    }
 }
 

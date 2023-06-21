@@ -1,9 +1,19 @@
 package epicenergyservice.u2bw.fatture.services;
 
 import epicenergyservice.u2bw.clienti.Cliente;
+import epicenergyservice.u2bw.exceptions.BadRequestException;
+import epicenergyservice.u2bw.exceptions.NotFoundException;
 import epicenergyservice.u2bw.fatture.Fattura;
 import epicenergyservice.u2bw.fatture.repositories.FatturaRepository;
+import epicenergyservice.u2bw.utenti.Ruolo;
+import epicenergyservice.u2bw.utenti.Utente;
+import epicenergyservice.u2bw.utenti.payloads.UtenteCreatePayload;
+import epicenergyservice.u2bw.utenti.repositories.RuoloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -14,56 +24,75 @@ import java.util.UUID;
 
 @Service
 public class FatturaService {
-    private final FatturaRepository fatturaRepository;
+
 
     @Autowired
-    public FatturaService(FatturaRepository fatturaRepository) {
-        this.fatturaRepository = fatturaRepository;
+    private FatturaRepository fatturaRepository;
+
+    public Fattura create(FatturaCreatePayload f) {
+//        fatturaRepository.findByEmail(u.getEmail()).ifPresent(user -> {
+//            throw new BadRequestException("Email " + user.getEmail() + " already in use!");
+//        });
+
+//        Ruolo ruoloDefault = fatturaRepository.findByNome("USER").orElseThrow(() -> new NotFoundException("Ruolo USER non esiste!!"));
+//        Utente newUser = new Utente(u.getCognome(),u.getEmail(),u.getNome(),u.getPassword(), u.getUsername());
+//        newUser.getRuoli().add(ruoloDefault);
+
+        return fatturaRepository.save(newFattura);
     }
 
-    public List<Fattura> getAllFattura() {
-        return fatturaRepository.findAll();
+    public Page<Fattura> find(int page, int size, String sortBy) {
+        if (size < 0)
+            size = 10;
+        if (size > 100)
+            size = 100;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+
+        return fatturaRepository.findAll(pageable);
     }
 
-    public Optional<Fattura> getFatturaById(UUID id) {
-        return fatturaRepository.findById(id);
+
+    public Fattura findById(UUID id) throws NotFoundException {
+        return fatturaRepository.findById(id).orElseThrow(() -> new NotFoundException("Utete con Id:" + id + "non trovato!!"));
     }
 
-    public Fattura saveFattura(Fattura fattura) {
-        return fatturaRepository.save(fattura);
+
+    public Fattura findByIdAndUpdate(UUID id, Fattura f) throws NotFoundException {
+        Fattura found = this.findById(id);
+
+//        found.setId(id);
+//        found.setNome(u.getNome());
+//        found.setCognome(u.getCognome());
+//        found.setEmail(u.getEmail());
+
+        return fatturaRepository.save(found);
     }
 
-    public boolean deleteFattura(UUID id) {
-        fatturaRepository.deleteById(id);
-        return false;
+    public void findByIdAndDelete(UUID id) throws NotFoundException {
+        Fattura found = this.findById(id);
+        fatturaRepository.delete(found);
     }
 
-    public Fattura createFattura(int anno, LocalDateTime data, Double importo, int numero, Cliente cliente) {
-        Fattura fattura = new Fattura();
-        fattura.setAnno(anno);
-        fattura.setData(data);
-        fattura.setImporto(importo);
-        fattura.setNumero(numero);
-        fattura.setCliente(cliente);
 
-        return fatturaRepository.save(fattura);
+    /// EXTRA
+    public Page<Fattura> findByClienteId(UUID id, int page, int size, String sortBy) {
+        if (size < 0)
+            size = 10;
+        if (size > 100)
+            size = 100;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+
+        return fatturaRepository.findByCliente_Id(id,pageable);
     }
 
-    public Fattura updateFattura(UUID fatturaId, Fattura updatedFattura) {
+    public Page<Fattura> findByStatoId(UUID id, int page, int size, String sortBy) {
+        if (size < 0)
+            size = 10;
+        if (size > 100)
+            size = 100;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
 
-        Fattura existingFattura = fatturaRepository.findById(fatturaId)
-                .orElseThrow(() -> new IllegalArgumentException("Fattura non trovata"));
-        existingFattura.setAnno(updatedFattura.getAnno());
-        existingFattura.setData(updatedFattura.getData());
-        existingFattura.setImporto(updatedFattura.getImporto());
-        existingFattura.setNumero(updatedFattura.getNumero());
-
-        return fatturaRepository.save(existingFattura);
+        return fatturaRepository.findByStatoFattura_Id(id,pageable);
     }
-
-    public Optional<Fattura> getFatturaPerNumero(int numeroFattura) {
-        return fatturaRepository.findByNumero(numeroFattura);
-    }
-
 
 }

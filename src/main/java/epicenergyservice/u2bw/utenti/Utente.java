@@ -32,13 +32,6 @@ public class Utente implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "ruolo_id"))
     private Set<Ruolo> ruoli = new LinkedHashSet<>();
 
-//    // Relazione many-to-many con Ruolo
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(name = "utente_ruolo",
-//            joinColumns = @JoinColumn(name = "utente_id"),
-//            inverseJoinColumns = @JoinColumn(name = "ruolo_id"))
-//    private Set<Ruolo> ruoli = new HashSet<>();
-
     public Utente(String cognome, String email, String nome, String password, String username) {
         this.cognome = cognome;
         this.email = email;

@@ -1,6 +1,7 @@
-package epicenergyservice.u2bw.utenti;
+package epicenergyservice.u2bw.utenti.repositories;
 
 
+import epicenergyservice.u2bw.utenti.Utente;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

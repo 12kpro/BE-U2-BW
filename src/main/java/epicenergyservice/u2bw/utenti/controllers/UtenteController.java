@@ -1,7 +1,9 @@
-package epicenergyservice.u2bw.utenti;
+package epicenergyservice.u2bw.utenti.controllers;
 
 
 import epicenergyservice.u2bw.exceptions.NotFoundException;
+import epicenergyservice.u2bw.utenti.Utente;
+import epicenergyservice.u2bw.utenti.services.UtenteService;
 import epicenergyservice.u2bw.utenti.payloads.UtenteCreatePayload;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/utenti")
 @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 
 // TODO Verificare il funzionamento per utenti con più ruoli

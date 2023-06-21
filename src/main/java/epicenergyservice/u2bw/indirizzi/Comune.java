@@ -15,10 +15,12 @@ import java.util.UUID;
 public class Comune {
     @Id
     private UUID id = UUID.randomUUID();
+
     @Column(length = 255)
     private String nome;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn
     private Provincia provincia;
 
     public Comune(String nome, Provincia provincia) {

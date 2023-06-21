@@ -27,10 +27,6 @@ public class Ruolo {
             inverseJoinColumns = @JoinColumn(name = "utente_id"))
     private Set<Utente> utenti = new LinkedHashSet<>();
 
-//    // Relazione many-to-many con Utente
-//    @ManyToMany(mappedBy = "ruoli")
-//    private Set<Utente> utenti = new HashSet<>();
-
     public Ruolo(String nome) {
         this.nome = nome;
     }

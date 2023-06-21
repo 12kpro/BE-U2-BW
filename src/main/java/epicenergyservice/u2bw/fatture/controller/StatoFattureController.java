@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+//@RestController
 @RequestMapping("/statofatture")
 public class StatoFattureController {
     private final StatoFatturaService tipoFatturaService;

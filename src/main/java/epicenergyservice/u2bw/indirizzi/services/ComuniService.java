@@ -20,19 +20,5 @@ import java.io.Reader;
 public class ComuniService {
     @Autowired
     private ComuniRepository comuniRepository;
-    @Autowired
-    private ProvinceService provinceService;
-    public void importCsv(Boolean refresh) throws IOException {
-            try ( Reader reader = new InputStreamReader(new ClassPathResource("comuni-italiani.csv").getInputStream())) {
-                CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withDelimiter(';').withFirstRecordAsHeader());
-                if(refresh || comuniRepository.count() == 0) {
-                    for (CSVRecord record : csvParser) {
-                        Provincia provincia = provinceService.findByNome(record.get(3));
-                        Comune c = new Comune(record.get(2), provincia);
-                        comuniRepository.save(c);
-                    }
-                }
-            }
-    }
 
 }
