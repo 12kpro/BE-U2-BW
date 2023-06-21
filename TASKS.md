@@ -25,19 +25,22 @@ Autorizzazioni: USER GET, ADMIN ALL
 - [x] POST
 - [x] PUT
 - [x] DELETE
+- [x] GET by data inserimento
+- [x] GET by data ultimocontatto
+- [x] GET by fatturato
+- [x] GET by parte del nome
+- [x] ClienteCreatePayloads
 
 #### Tipi cliente
 Endpoint /tipocliente
 Autorizzazioni: USER GET, ADMIN ALL
 - [x] GET all
 - [x] GET by id
-- [ ] GET by data inserimento
-- [ ] GET by data ultimocontatto
-- [ ] GET by fatturato
-- [ ] GET by parte del nome
 - [x] POST
 - [x] PUT
 - [x] DELETE
+- [x] payload tipo cliente
+- [x] fixata paginazione
 
 ## Alfonso
 #### Fatture
@@ -73,11 +76,11 @@ Autorizzazioni: USER GET, ADMIN ALL
 #### Indirizzi
 Endpoint /indirizzi
 Autorizzazioni: USER GET, ADMIN ALL
-- [ ] GET all
-- [ ] GET by id
-- [ ] POST
-- [ ] PUT
-- [ ] DELETE
+- [x] GET all
+- [x] GET by id
+- [x] POST
+- [x] PUT
+- [x] DELETE
 
 
 ### Endpoint

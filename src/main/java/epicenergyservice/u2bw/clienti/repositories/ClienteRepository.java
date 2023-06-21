@@ -1,30 +1,32 @@
 package epicenergyservice.u2bw.clienti.repositories;
 
 import epicenergyservice.u2bw.clienti.Cliente;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.time.LocalDate;
 import java.util.Optional;
-
 import java.util.UUID;
 
 @Repository
-public interface ClienteRepository extends JpaRepository<Cliente, UUID> {
+public interface ClienteRepository extends JpaRepository {
+    Page<Cliente> findById(UUID id);
 
-    @Query("SELECT c FROM Cliente c")
-    List<Cliente> findAll();
+    Page<Cliente> findByNomeContatto(String nomeContatto, Pageable pageable);
 
-    @Query("SELECT c FROM Cliente c WHERE c.id = :id")
-    Optional<Cliente> findById(@Param("id") UUID id);
+    Page<Cliente> findByEmail(String email, Pageable pageable);
 
-    @Query("SELECT c FROM Cliente c WHERE c.nomeContatto = :nomeContatto")
-    List<Cliente> findByNomeContatto(@Param("nomeContatto") String nomeContatto);
+    Page<Cliente> filtraClientiPerFatturatoAnnuo(double minFatturato, double maxFatturato, Pageable pageable);
 
-    @Query("SELECT c FROM Cliente c WHERE c.email = :email")
-    List<Cliente> findByEmail(@Param("email") String email);
+    Page<Cliente> findByInserimento(LocalDate dataInserimento, Pageable pageable);
+
+    Page<Cliente> searchByPartName(String partName, Pageable pageable);
+
+    Page<Cliente> findByUltimocontatto(LocalDate ultimoContatto, Pageable pageable);
+
+    Page<Cliente> searchByProvincia(String provincia, Pageable pageable);
 }
 
 

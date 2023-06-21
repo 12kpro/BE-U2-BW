@@ -1,57 +1,61 @@
 package epicenergyservice.u2bw.clienti.controller;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import epicenergyservice.u2bw.clienti.TipoCliente;
-import epicenergyservice.u2bw.clienti.repositories.TipoClienteRepository;
-import epicenergyservice.u2bw.exceptions.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import epicenergyservice.u2bw.clienti.services.TipoClienteService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
+
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/tipocliente")
+@RequestMapping("/tipoclienti")
 public class TipoClienteController {
+    private final TipoClienteService tipoClienteService;
 
-    @Autowired
-    private TipoClienteRepository tipoClienteRepository;
+    public TipoClienteController(TipoClienteService tipoClienteService) {
+        this.tipoClienteService = tipoClienteService;
+    }
 
     @GetMapping
-    public ResponseEntity<Page<TipoCliente>> getAllTipiCliente(Pageable pageable) {
-        Page<TipoCliente> tipiCliente = tipoClienteRepository.findAll(pageable);
-        return ResponseEntity.ok(tipiCliente);
+    public ResponseEntity<Page<TipoCliente>> getAllTipoClienti(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize
+    ) {
+        Page<TipoCliente> tipoClienti = tipoClienteService.getAllTipoClienti(pageNumber, pageSize);
+        return ResponseEntity.ok(tipoClienti);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TipoCliente> getTipoClienteById(@PathVariable UUID id) {
-        TipoCliente tipoCliente = tipoClienteRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Tipo cliente non trovato con ID: " + id));
+    public ResponseEntity<Page<TipoCliente>> getTipoClienteById(
+            @PathVariable UUID id,
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize
+    ) {
+        Page<TipoCliente> tipoCliente = tipoClienteService.getTipoClienteById(id, pageNumber, pageSize);
         return ResponseEntity.ok(tipoCliente);
     }
 
     @PostMapping
     public ResponseEntity<TipoCliente> createTipoCliente(@RequestBody TipoCliente tipoCliente) {
-        TipoCliente nuovoTipoCliente = tipoClienteRepository.save(tipoCliente);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuovoTipoCliente);
+        TipoCliente createdTipoCliente = tipoClienteService.createTipoCliente(tipoCliente);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdTipoCliente);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TipoCliente> updateTipoCliente(@PathVariable UUID id, @RequestBody TipoCliente tipoCliente) {
-        TipoCliente tipoClienteEsistente = tipoClienteRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Tipo cliente non trovato con ID: " + id));
+    public ResponseEntity<TipoCliente> updateTipoCliente(
+            @PathVariable UUID id,
+            @RequestBody TipoCliente tipoCliente
+    ) {
         tipoCliente.setId(id);
-        TipoCliente tipoClienteAggiornato = tipoClienteRepository.save(tipoCliente);
-        return ResponseEntity.ok(tipoClienteAggiornato);
+        TipoCliente updatedTipoCliente = tipoClienteService.updateTipoCliente(tipoCliente);
+        return ResponseEntity.ok(updatedTipoCliente);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTipoCliente(@PathVariable UUID id) {
-        TipoCliente tipoClienteEsistente = tipoClienteRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Tipo cliente non trovato con ID: " + id));
-        tipoClienteRepository.delete(tipoClienteEsistente);
+        tipoClienteService.deleteTipoCliente(id);
         return ResponseEntity.noContent().build();
     }
 }
