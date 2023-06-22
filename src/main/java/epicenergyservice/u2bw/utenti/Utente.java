@@ -1,5 +1,6 @@
 package epicenergyservice.u2bw.utenti;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -26,10 +27,12 @@ public class Utente implements UserDetails {
     private String password;
     private String username;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "utenti_ruoli",
             joinColumns = @JoinColumn(name = "utente_id"),
             inverseJoinColumns = @JoinColumn(name = "ruolo_id"))
+
+    @JsonIgnore
     private Set<Ruolo> ruoli = new LinkedHashSet<>();
 
     public Utente(String cognome, String email, String nome, String password, String username) {

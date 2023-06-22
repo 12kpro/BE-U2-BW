@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 @RequestMapping("/indirizzo")
-@PreAuthorize("hasRole('ADMIN') or hasRole('Indirizzo')")
+@PreAuthorize("hasAuthority('ADMIN') || hasAuthority('USER')")
 public class IndirizzoController {
 
     @Autowired
@@ -32,7 +32,7 @@ public class IndirizzoController {
     }
 
     @PostMapping("")
-    @PostAuthorize("hasRole('ADMIN')")
+    @PostAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public Indirizzo saveIndirizzo(@RequestBody @Validated IndirizzoCreatePayload body) {
         return indirizzoService.create(body);
@@ -40,13 +40,13 @@ public class IndirizzoController {
 
     //TODO Da Verificare
     @PutMapping("/{indirizzoId}")
-    @PostAuthorize("hasRole('ADMIN')")
+    @PostAuthorize("hasAuthority('ADMIN')")
     public Indirizzo updateIndirizzo(@PathVariable UUID indirizzoId, @RequestBody Indirizzo body) throws Exception {
         return indirizzoService.findByIdAndUpdate(indirizzoId, body);
     }
 
     @DeleteMapping("/{indirizzoId}")
-    @PostAuthorize("hasRole('ADMIN')")
+    @PostAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteIndirizzo(@PathVariable UUID indirizzoId) throws NotFoundException {
         indirizzoService.findByIdAndDelete(indirizzoId);
