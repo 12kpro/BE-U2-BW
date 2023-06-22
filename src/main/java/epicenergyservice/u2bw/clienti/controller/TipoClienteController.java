@@ -1,61 +1,42 @@
 package epicenergyservice.u2bw.clienti.controller;
 
+
+
+import epicenergyservice.u2bw.clienti.Cliente;
 import epicenergyservice.u2bw.clienti.TipoCliente;
+import epicenergyservice.u2bw.clienti.services.ClienteService;
 import epicenergyservice.u2bw.clienti.services.TipoClienteService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/tipoclienti")
+@RequestMapping("/tipo-cliente")
 public class TipoClienteController {
     private final TipoClienteService tipoClienteService;
 
+    @Autowired
     public TipoClienteController(TipoClienteService tipoClienteService) {
         this.tipoClienteService = tipoClienteService;
     }
 
-    @GetMapping
-    public ResponseEntity<Page<TipoCliente>> getAllTipoClienti(
-            @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "10") int pageSize
-    ) {
-        Page<TipoCliente> tipoClienti = tipoClienteService.getAllTipoClienti(pageNumber, pageSize);
-        return ResponseEntity.ok(tipoClienti);
-    }
-
     @GetMapping("/{id}")
-    public ResponseEntity<Page<TipoCliente>> getTipoClienteById(
-            @PathVariable UUID id,
-            @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "10") int pageSize
-    ) {
-        Page<TipoCliente> tipoCliente = tipoClienteService.getTipoClienteById(id, pageNumber, pageSize);
-        return ResponseEntity.ok(tipoCliente);
+    public ResponseEntity<TipoCliente> getTipoClienteById(@PathVariable UUID id) {
+        Optional<TipoCliente> tipoCliente = tipoClienteService.getTipoClienteById(id);
+        return tipoCliente.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public ResponseEntity<TipoCliente> createTipoCliente(@RequestBody TipoCliente tipoCliente) {
-        TipoCliente createdTipoCliente = tipoClienteService.createTipoCliente(tipoCliente);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdTipoCliente);
+    @GetMapping("/nome/{nome}")
+    public ResponseEntity<TipoCliente> getTipoClienteByNome(@PathVariable String nome) {
+        Optional<TipoCliente> tipoCliente = tipoClienteService.getTipoClienteByNome(nome);
+        return tipoCliente.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<TipoCliente> updateTipoCliente(
-            @PathVariable UUID id,
-            @RequestBody TipoCliente tipoCliente
-    ) {
-        tipoCliente.setId(id);
-        TipoCliente updatedTipoCliente = tipoClienteService.updateTipoCliente(tipoCliente);
-        return ResponseEntity.ok(updatedTipoCliente);
-    }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTipoCliente(@PathVariable UUID id) {
-        tipoClienteService.deleteTipoCliente(id);
-        return ResponseEntity.noContent().build();
-    }
+
 }
