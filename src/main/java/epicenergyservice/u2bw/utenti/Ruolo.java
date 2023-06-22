@@ -1,5 +1,6 @@
 package epicenergyservice.u2bw.utenti;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -26,6 +27,7 @@ public class Ruolo {
     @JoinTable(name = "utenti_ruoli",
             joinColumns = @JoinColumn(name = "ruolo_id"),
             inverseJoinColumns = @JoinColumn(name = "utente_id"))
+    @JsonIgnore
     private Set<Utente> utenti = new LinkedHashSet<>();
 
     public Ruolo(String nome) {

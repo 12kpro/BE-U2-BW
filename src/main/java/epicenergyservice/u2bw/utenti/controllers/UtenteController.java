@@ -18,7 +18,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/utenti")
-@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+@PreAuthorize("hasAuthority('ADMIN') || hasAuthority('USER')")
 
 // TODO Verificare il funzionamento per utenti con più ruoli
 public class UtenteController {
@@ -36,20 +36,20 @@ public class UtenteController {
     }
 
     @PostMapping("")
-    @PostAuthorize("hasRole('ADMIN')")
+    @PostAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public Utente saveUser(@RequestBody @Validated UtenteCreatePayload body) {
         return utenteService.create(body);
     }
 
     @PutMapping("/{userId}")
-    @PostAuthorize("hasRole('ADMIN')")
+    @PostAuthorize("hasAuthority('ADMIN')")
     public Utente updateUser(@PathVariable UUID userId, @RequestBody Utente body) throws Exception {
         return utenteService.findByIdAndUpdate(userId, body);
     }
 
     @DeleteMapping("/{userId}")
-    @PostAuthorize("hasRole('ADMIN')")
+    @PostAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable UUID userId) throws NotFoundException {
         utenteService.findByIdAndDelete(userId);
