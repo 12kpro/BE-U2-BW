@@ -15,7 +15,6 @@ public class StatoFattura {
     private UUID id = UUID.randomUUID();
     private String stato;
 
-    @OneToOne(mappedBy = "statoFattura")  // Corretta mappatura bidirezionale
+    @OneToOne(mappedBy = "statoFattura")
     private Fattura fattura;
-
 }

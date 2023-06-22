@@ -1,5 +1,6 @@
 package epicenergyservice.u2bw.fatture.payloads;
 
+import epicenergyservice.u2bw.clienti.Cliente;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,10 +24,8 @@ public class FatturaCreatePayload {
     @Positive(message = "L'importo deve essere un valore positivo")
     private BigDecimal importo;
 
-
-
     @NotNull(message = "Il cliente è obbligatorio")
-    private UUID cliente;
+    private Cliente cliente;
 
     public FatturaCreatePayload() {
     }
@@ -55,14 +54,22 @@ public class FatturaCreatePayload {
         this.importo = importo;
     }
 
-
-
-
-    public UUID getCliente() {
+    public Cliente getCliente() {
         return cliente;
     }
 
-    public void setCliente(UUID cliente) {
+    public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
+
+    private String stato;
+
+    public String getStato() {
+        return stato;
+    }
+
+    public void setStato(String stato) {
+        this.stato = stato;
+    }
+
 }

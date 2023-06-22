@@ -49,8 +49,7 @@ public class StatoFatturaService {
         }
 
         StatoFattura statoFattura = new StatoFattura();
-        statoFattura.setCodice(statoFatturaPayload.getCodice());
-        statoFattura.setDescrizione(statoFatturaPayload.getDescrizione());
+        statoFattura.setStato(statoFatturaPayload.getStato());
         statoFattura.setFattura(statoFatturaPayload.getFattura());
 
         return statoFatturaRepository.save(statoFattura);
@@ -64,8 +63,7 @@ public class StatoFatturaService {
         }
 
         StatoFattura statoFattura = existingStato.get();
-        statoFattura.setCodice(statoFatturaPayload.getCodice());
-        statoFattura.setDescrizione(statoFatturaPayload.getDescrizione());
+        statoFattura.setStato(statoFatturaPayload.getStato());
         statoFattura.setFattura(statoFatturaPayload.getFattura());
 
         return statoFatturaRepository.save(statoFattura);

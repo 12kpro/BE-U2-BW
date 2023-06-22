@@ -1,5 +1,8 @@
 package epicenergyservice.u2bw.fatture.services;
 
+import epicenergyservice.u2bw.clienti.Cliente;
+import epicenergyservice.u2bw.clienti.TipoCliente;
+import epicenergyservice.u2bw.clienti.repositories.ClienteRepository;
 import epicenergyservice.u2bw.exceptions.NotFoundException;
 import epicenergyservice.u2bw.fatture.Fattura;
 import epicenergyservice.u2bw.fatture.StatoFattura;
@@ -22,10 +25,12 @@ import java.util.UUID;
 @Setter
 public class FatturaService {
     private final FatturaRepository fatturaRepository;
+    private final ClienteRepository clienteRepository;
 
     @Autowired
-    public FatturaService(FatturaRepository fatturaRepository) {
+    public FatturaService(FatturaRepository fatturaRepository, ClienteRepository clienteRepository) {
         this.fatturaRepository = fatturaRepository;
+        this.clienteRepository = clienteRepository;
     }
 
     public Page<Fattura> getFatture(
@@ -46,20 +51,25 @@ public class FatturaService {
                 .orElseThrow(() -> new NotFoundException("Fattura non trovata"));
     }
 
-    //TODO Recuperare cliente da id
-    //TODO Recuperare stato fattura da stato default (non pagata)
+    // TODO Recuperare cliente da id
+    // TODO Recuperare stato fattura da stato default (non pagata)
     public Fattura createFattura(FatturaCreatePayload payload) {
         Fattura fattura = new Fattura();
         fattura.setData(payload.getData());
         fattura.setImporto(payload.getImporto().doubleValue());
         fattura.setNumero(payload.getNumero());
-        fattura.setCliente(payload.getCliente());
+
+        UUID clienteId = payload.getCliente().getId();
+        Cliente cliente = (Cliente) clienteRepository.findById(clienteId);
+
+        TipoCliente statoCliente = cliente.getTipoCliente();
+
+
 
         return fatturaRepository.save(fattura);
     }
 
-
-    //TODO creare un payload per fattura update e passare data e stato
+    // TODO creare un payload per fattura update e passare data e stato
     public Fattura updateFattura(UUID fatturaId, FatturaCreatePayload payload) throws NotFoundException {
         Fattura fattura = fatturaRepository.findById(fatturaId)
                 .orElseThrow(() -> new NotFoundException("Fattura non trovata"));
@@ -71,7 +81,6 @@ public class FatturaService {
 
         return fatturaRepository.save(fattura);
     }
-
 
     public void deleteFattura(UUID fatturaId) throws NotFoundException {
         if (!fatturaRepository.existsById(fatturaId)) {

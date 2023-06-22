@@ -1,11 +1,15 @@
 package epicenergyservice.u2bw.fatture.payloads;
 
+import epicenergyservice.u2bw.fatture.Fattura;
 import lombok.Getter;
 import lombok.Setter;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Positive;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -13,10 +17,10 @@ public class StatoFatturaUpdatePayload {
     @NotNull(message = "L'ID è obbligatorio")
     private Long id;
 
+    @NotBlank(message = "Lo stato è obbligatorio")
+    private String stato;
 
-    @NotNull(message = "La descrizione è obbligatoria")
-    @NotBlank(message = "La descrizione non può essere vuota")
-    private String descrizione;
+    private Fattura fattura;
 
     public StatoFatturaUpdatePayload() {
     }
@@ -29,12 +33,19 @@ public class StatoFatturaUpdatePayload {
         this.id = id;
     }
 
-
-    public String getDescrizione() {
-        return descrizione;
+    public String getStato() {
+        return stato;
     }
 
-    public void setDescrizione(String descrizione) {
-        this.descrizione = descrizione;
+    public void setStato(String stato) {
+        this.stato = stato;
+    }
+
+    public Fattura getFattura() {
+        return fattura;
+    }
+
+    public void setFattura(Fattura fattura) {
+        this.fattura = fattura;
     }
 }
