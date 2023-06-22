@@ -13,6 +13,8 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,15 +42,15 @@ public class Cliente {
     @Column(length = 255)
     private String emailContatto;
     @Column(nullable = false,unique = true, columnDefinition = "timestamp without time zone")
-    private String dataInserimento;
+    private LocalDate dataInserimento;
     @Column(columnDefinition = "timestamp without time zone")
-    private String dataUltimoContatto;
+    private LocalDate dataUltimoContatto;
     @Column(length = 255)
     private String email;
     // TODO campo calcolato? Fare sub query
     @Formula("")
     @Column(columnDefinition = "numeric(19,2)")
-    private String fatturatoAnnuale;
+    private Double fatturatoAnnuale;
     @Column(nullable = false)
     private String partitaIva;
     @Column(nullable = false)

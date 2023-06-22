@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/statofatture")
@@ -24,7 +25,7 @@ public class StatoFattureController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StatoFattura> getStatoFatturaById(@PathVariable("id") Long id) {
+    public ResponseEntity<StatoFattura> getStatoFatturaById(@PathVariable("id") UUID id) {
         Optional<StatoFattura> statoFattura = statoFatturaService.getStatoFatturaById(id);
         return statoFattura.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -37,7 +38,7 @@ public class StatoFattureController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StatoFattura> updateStatoFattura(@PathVariable("id") Long id, @RequestBody @Validated StatoFatturaUpdatePayload statoFattura) {
+    public ResponseEntity<StatoFattura> updateStatoFattura(@PathVariable("id") UUID id, @RequestBody @Validated StatoFatturaUpdatePayload statoFattura) {
         Optional<StatoFattura> existingStatoFattura = statoFatturaService.getStatoFatturaById(id);
         if (existingStatoFattura.isPresent()) {
             statoFattura.setId(id);
@@ -49,7 +50,7 @@ public class StatoFattureController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStatoFattura(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteStatoFattura(@PathVariable("id") UUID id) {
         Optional<StatoFattura> existingStatoFattura = statoFatturaService.getStatoFatturaById(id);
         if (existingStatoFattura.isPresent()) {
             statoFatturaService.deleteStatoFattura(id);

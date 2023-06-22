@@ -17,31 +17,31 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
-@EnableMethodSecurity
+//@EnableWebSecurity
+//@EnableMethodSecurity
 public class SecurityConfig {
     @Autowired
     JWTAuthFilter jwtAuthFilter;
     @Autowired
     ExceptionHandlerFilter exceptionHandlerFilter;
 
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.cors(c -> c.disable());
-        http.csrf(c -> c.disable());
-
-        http.authorizeHttpRequests(auth -> auth.requestMatchers("/auth/**").permitAll());
-        http.authorizeHttpRequests(auth -> auth.requestMatchers("/import/**").authenticated());
-        http.authorizeHttpRequests(auth -> auth.requestMatchers("/utenti/**").authenticated());
-        http.authorizeHttpRequests(auth -> auth.requestMatchers("/ruoli/**").authenticated());
-
-        //http.addFilterBefore(exceptionHandlerFilter, JWTAuthFilter.class);
-        http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
-        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
-        return http.build();
-    }
+//    @Bean
+//    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http.cors(c -> c.disable());
+//        http.csrf(c -> c.disable());
+//
+//        http.authorizeHttpRequests(auth -> auth.requestMatchers("/auth/**").permitAll());
+//        http.authorizeHttpRequests(auth -> auth.requestMatchers("/import/**").authenticated());
+//        http.authorizeHttpRequests(auth -> auth.requestMatchers("/utenti/**").authenticated());
+//        http.authorizeHttpRequests(auth -> auth.requestMatchers("/ruoli/**").authenticated());
+//
+//        //http.addFilterBefore(exceptionHandlerFilter, JWTAuthFilter.class);
+//        http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+//
+//        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+//
+//        return http.build();
+//    }
     @Bean
     PasswordEncoder pwEncoder() {
         return new BCryptPasswordEncoder(10);

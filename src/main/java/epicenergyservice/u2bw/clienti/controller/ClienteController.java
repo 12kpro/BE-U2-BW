@@ -49,12 +49,12 @@ public class ClienteController {
 
     @GetMapping("/fatturato")
     public ResponseEntity<Page<Cliente>> filtraClientiPerFatturatoAnnuo(
-            @RequestParam double minFatturato,
-            @RequestParam double maxFatturato,
+            @RequestParam Double fatturato,
+
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        Page<Cliente> result = clienteService.filtraClientiPerFatturatoAnnuo(minFatturato, maxFatturato, page, size);
+        Page<Cliente> result = clienteService.filtraClientiPerFatturatoAnnuo(fatturato, page, size);
         return ResponseEntity.ok(result);
     }
 
@@ -80,19 +80,19 @@ public class ClienteController {
     }
 
     @GetMapping("/ultimocontatto")
-    public ResponseEntity<Page<Cliente>> findByUltimocontatto(
+    public ResponseEntity<Cliente> findByUltimocontatto(
             @RequestParam String ultimoContatto,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
         LocalDate parsedDate = LocalDate.parse(ultimoContatto);
-        Page<Cliente> result = clienteService.findByUltimocontatto(parsedDate, page, size);
+        Cliente result = clienteService.findByUltimocontatto(parsedDate);
         return ResponseEntity.ok(result);
     }
 
     @GetMapping("/provincia")
     public ResponseEntity<Page<Cliente>> searchByProvincia(
-            @RequestParam String provincia,
+            @RequestParam Integer provincia,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {

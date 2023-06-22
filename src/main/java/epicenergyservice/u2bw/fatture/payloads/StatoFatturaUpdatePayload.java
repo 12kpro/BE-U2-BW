@@ -15,7 +15,7 @@ import java.util.UUID;
 @Setter
 public class StatoFatturaUpdatePayload {
     @NotNull(message = "L'ID è obbligatorio")
-    private Long id;
+    private UUID id;
 
     @NotBlank(message = "Lo stato è obbligatorio")
     private String stato;
@@ -25,11 +25,11 @@ public class StatoFatturaUpdatePayload {
     public StatoFatturaUpdatePayload() {
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

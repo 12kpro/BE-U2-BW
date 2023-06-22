@@ -2,6 +2,9 @@ package epicenergyservice.u2bw.clienti.services;
 
 import epicenergyservice.u2bw.clienti.Cliente;
 import epicenergyservice.u2bw.clienti.repositories.ClienteRepository;
+import epicenergyservice.u2bw.exceptions.NotFoundException;
+import epicenergyservice.u2bw.indirizzi.Provincia;
+import epicenergyservice.u2bw.indirizzi.services.ProvinceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,15 +18,17 @@ import java.util.UUID;
 
 @Service
 public class ClienteService {
+    @Autowired
     private final ClienteRepository clienteRepository;
-
+    @Autowired
+    ProvinceService provinceService;
     public ClienteService(ClienteRepository clienteRepository) {
         this.clienteRepository = clienteRepository;
     }
 
-   /* public Cliente findById(UUID id) {
-        return clienteRepository.findById(id).orElse(null);
-    }*/
+    public Cliente findById(UUID id) {
+        return clienteRepository.findById(id).orElseThrow(() -> new NotFoundException("Cliente con Id:" + id + "non trovato!!"));
+    }
     public Page<Cliente> findByNomeContatto(String nomeContatto, int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return clienteRepository.findByNomeContatto(nomeContatto, pageable);
@@ -34,29 +39,29 @@ public class ClienteService {
         return clienteRepository.findByEmail(email, pageable);
     }
 
-    public Page<Cliente> filtraClientiPerFatturatoAnnuo(double minFatturato, double maxFatturato, int pageNumber, int pageSize) {
+    public Page<Cliente> filtraClientiPerFatturatoAnnuo( Double fatturato, int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return clienteRepository.filtraClientiPerFatturatoAnnuo(minFatturato, maxFatturato, pageable);
+        return clienteRepository.findByFatturatoAnnuale(fatturato, pageable);
     }
 
     public Page<Cliente> findByInserimento(LocalDate dataInserimento, int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return clienteRepository.findByInserimento(dataInserimento, pageable);
+        return clienteRepository.findByDataInserimento(dataInserimento, pageable);
     }
 
     public Page<Cliente> searchByPartName(String partName, int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return clienteRepository.searchByPartName(partName, pageable);
+        return clienteRepository.findByNomeContattoContainsIgnoreCase(partName, pageable);
     }
 
-    public Page<Cliente> findByUltimocontatto(LocalDate ultimoContatto, int pageNumber, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return clienteRepository.findByUltimocontatto(ultimoContatto, pageable);
+    public Cliente findByUltimocontatto(LocalDate ultimoContatto ) {
+        return clienteRepository.findByDataUltimoContatto(ultimoContatto).orElseThrow(() -> new NotFoundException("Cliente non trovato!!"));
     }
 
-    public Page<Cliente> searchByProvincia(String provincia, int pageNumber, int pageSize) {
+    public Page<Cliente> searchByProvincia(Integer provinciaId, int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return clienteRepository.searchByProvincia(provincia, pageable);
+        Provincia p = provinceService.findById(provinciaId);
+        return clienteRepository.findByIndirizzoSedeLegale_Comune_Provincia(p, pageable);
     }
 
 }

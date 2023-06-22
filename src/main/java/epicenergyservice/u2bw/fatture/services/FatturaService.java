@@ -3,6 +3,7 @@ package epicenergyservice.u2bw.fatture.services;
 import epicenergyservice.u2bw.clienti.Cliente;
 import epicenergyservice.u2bw.clienti.TipoCliente;
 import epicenergyservice.u2bw.clienti.repositories.ClienteRepository;
+import epicenergyservice.u2bw.clienti.services.ClienteService;
 import epicenergyservice.u2bw.exceptions.NotFoundException;
 import epicenergyservice.u2bw.fatture.Fattura;
 import epicenergyservice.u2bw.fatture.StatoFattura;
@@ -26,7 +27,8 @@ import java.util.UUID;
 public class FatturaService {
     private final FatturaRepository fatturaRepository;
     private final ClienteRepository clienteRepository;
-
+    @Autowired
+    ClienteService clienteService;
     @Autowired
     public FatturaService(FatturaRepository fatturaRepository, ClienteRepository clienteRepository) {
         this.fatturaRepository = fatturaRepository;
@@ -51,7 +53,6 @@ public class FatturaService {
                 .orElseThrow(() -> new NotFoundException("Fattura non trovata"));
     }
 
-    // TODO Recuperare cliente da id
     // TODO Recuperare stato fattura da stato default (non pagata)
     public Fattura createFattura(FatturaCreatePayload payload) {
         Fattura fattura = new Fattura();
@@ -60,7 +61,7 @@ public class FatturaService {
         fattura.setNumero(payload.getNumero());
 
         UUID clienteId = payload.getCliente().getId();
-        Cliente cliente = (Cliente) clienteRepository.findById(clienteId);
+        Cliente cliente = clienteService.findById(clienteId);
 
         TipoCliente statoCliente = cliente.getTipoCliente();
 

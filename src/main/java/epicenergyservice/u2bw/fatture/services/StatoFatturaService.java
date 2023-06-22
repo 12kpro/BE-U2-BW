@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Getter
@@ -27,7 +28,7 @@ public class StatoFatturaService {
         return statoFatturaRepository.findAll();
     }
 
-    public Optional<StatoFattura> getStatoFatturaById(Long id) {
+    public Optional<StatoFattura> getStatoFatturaById(UUID id) {
         return statoFatturaRepository.findById(id);
     }
 
@@ -35,7 +36,7 @@ public class StatoFatturaService {
         return statoFatturaRepository.save(statoFattura);
     }
 
-    public void deleteStatoFattura(Long id) {
+    public void deleteStatoFattura(UUID id) {
         statoFatturaRepository.deleteById(id);
     }
 
@@ -56,7 +57,7 @@ public class StatoFatturaService {
     }
 
     public StatoFattura updateStatoFattura(StatoFatturaUpdatePayload statoFatturaPayload) {
-        Long id = statoFatturaPayload.getId();
+        UUID id = statoFatturaPayload.getId();
         Optional<StatoFattura> existingStato = statoFatturaRepository.findById(id);
         if (existingStato.isEmpty()) {
             throw new IllegalArgumentException("Stato fattura non trovato con ID: " + id);

@@ -6,8 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface StatoFatturaRepository extends JpaRepository<StatoFattura, Long> {
+public interface StatoFatturaRepository extends JpaRepository<StatoFattura, UUID> {
     Optional<StatoFattura> findByFattura(Fattura fattura);
 }
