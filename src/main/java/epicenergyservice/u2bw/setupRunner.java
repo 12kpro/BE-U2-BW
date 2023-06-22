@@ -3,11 +3,15 @@ package epicenergyservice.u2bw;
 import epicenergyservice.u2bw.exceptions.NotFoundException;
 import epicenergyservice.u2bw.indirizzi.Comune;
 import epicenergyservice.u2bw.indirizzi.Provincia;
+import epicenergyservice.u2bw.indirizzi.payloads.ComuneCreatePayload;
+import epicenergyservice.u2bw.indirizzi.payloads.ProvinciaCreatePayload;
+import epicenergyservice.u2bw.indirizzi.repositories.ComuniRepository;
 import epicenergyservice.u2bw.indirizzi.repositories.ProvinceRepository;
 import epicenergyservice.u2bw.indirizzi.services.ComuniService;
 import epicenergyservice.u2bw.indirizzi.services.ProvinceService;
 import epicenergyservice.u2bw.utenti.Ruolo;
 import epicenergyservice.u2bw.utenti.Utente;
+import epicenergyservice.u2bw.utenti.repositories.RuoloRepository;
 import epicenergyservice.u2bw.utenti.repositories.UtenteRepository;
 import epicenergyservice.u2bw.utenti.services.RuoloService;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +28,9 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -39,9 +45,9 @@ public class setupRunner implements CommandLineRunner {
 
     private String[] ruoliDefault = new String[]{"USER","ADMIN"};
     @Autowired
-    RuoloService ruoloService;
+    RuoloRepository ruoloRepository;
     @Autowired
-    ComuniService comuniService;
+    ComuniRepository comuniRepository;
     @Autowired
     ProvinceRepository provinceRepository;
 
@@ -83,44 +89,77 @@ public class setupRunner implements CommandLineRunner {
     }
 
     public void loadCsv() throws IOException {
+        List<String> provinceNotFound = new ArrayList<>();
+        List<String> comuniNotFound = new ArrayList<>();
+        List<String> codiciComuniNotValid = new ArrayList<>();
         Reader readerComuni = new InputStreamReader(new ClassPathResource("comuni-italiani.csv").getInputStream());
         CSVParser comuni = new CSVParser(readerComuni, CSVFormat.DEFAULT.withDelimiter(';').withFirstRecordAsHeader());
 
-        Reader readerProvince = new InputStreamReader(new ClassPathResource("province-italiane.csv").getInputStream());
-        CSVParser province = new CSVParser(readerComuni, CSVFormat.DEFAULT.withDelimiter(';').withFirstRecordAsHeader());
+        for (CSVRecord comune : comuni) {
 
-        provinceRepository.deleteAll();
-        for (CSVRecord provincia : province) {
-            Optional<CSVRecord> pc = comuni.stream().filter(c -> c.get(3).contains(provincia.get(2))).findFirst();
-            pc.orElseThrow(() -> new NotFoundException("Provincia non trovato!!"));
-            log.info(provincia.get(2));
-            log.info(pc.toString());
-            //Arrays.asList(comuni).contains(provincia.get(2));
-            //Provincia p = new Provincia(provincia.get(1), provincia.get(0), provincia.get(2));
-            //provinceRepository.save(p);
+            Reader readerProvince = new InputStreamReader(new ClassPathResource("province-italiane.csv").getInputStream());
+            CSVParser province = new CSVParser(readerProvince, CSVFormat.DEFAULT.withDelimiter(';').withFirstRecordAsHeader());
+
+            Optional<Provincia> provincia = Optional.ofNullable(provinceRepository.findByNome(comune.get(3))
+                    .orElseGet(() -> {
+                Optional<CSVRecord> result = province.stream()
+                        .filter(p -> p.get(1).equals(comune.get(3)))
+                        .findFirst();
+                //log.info("result" + result.toString());
+                if (result.isPresent()) {
+                    CSVRecord r = result.get();
+                    Provincia p = new Provincia(Integer.parseInt(comune.get(0)), r.get(1), r.get(0), r.get(2));
+                    return provinceRepository.save(p);
+                } else {
+                    return null;
+                }
+            })
+            );
+
+            if(provincia.isPresent()){
+                if(comune.get(1).contains("#")){
+                    if(!codiciComuniNotValid.contains(comune.get(2))){
+                        codiciComuniNotValid.add(comune.get(2));
+                    }
+                }else{
+                    Optional<Comune> comuneDb = comuniRepository.findByCodComuneAndProvincia(comune.get(1),provincia.get());
+                    if(!comuneDb.isPresent()){
+                        comuniRepository.save(new Comune( comune.get(1), comune.get(2), provincia.get()));
+                    }
+                }
+            }else{
+                if(!provinceNotFound.contains(comune.get(3))){
+                    provinceNotFound.add(comune.get(3));
+                }
+                if(!comuniNotFound.contains(comune.get(2))){
+                    comuniNotFound.add(comune.get(2));
+                }
+            }
         }
-
-//        comuniRepository.deleteAll();
-//        for (CSVRecord record : comuni) {
-//            Comune c = new Comune(record.get(0),record.get(1),record.get(2), provincia);
-//            comuniRepository.save(c);
-//        }
-//
-//
-//        provinceRepository.deleteAll();
-//        for (CSVRecord record : csvParser) {
-//            Provincia p = new Provincia(record.get(1), record.get(0), record.get(2));
-//            provinceRepository.save(p);
-//        }
+        log.info("Lista Province non trovate in province-italiane.csv");
+        log.info(provinceNotFound.toString());
+        log.info("Lista Comuni non inseriti verificare corrispondenza province in province-italiane.csv");
+        log.info(comuniNotFound.toString());
+        log.info("Lista comuni con codice comune non valido");
+        log.info(codiciComuniNotValid.toString());
     }
     public void firstUserCreate(){
-        for (String ruolo : ruoliDefault) {
-            ruoloService.create(ruolo);
+        if(ruoloRepository.count() == 0) {
+            for (String ruolo : ruoliDefault) {
+                ruoloRepository.save(new Ruolo(ruolo));
+            }
         }
-
+        //TODO nick prende un valore inesistente nei file properties e env
+        Optional<Utente> found = utenteRepository.findByEmail(email);
         Utente admin = new Utente(cognome,email,nome,bcrypt.encode(password),username);
-        Ruolo ruolo = ruoloService.findNome("ADMIN");
-        admin.getRuoli().add(ruolo);
-        utenteRepository.save(admin);
+        log.info(username);
+        Optional<Ruolo> ruolo = ruoloRepository.findByNome("ADMIN");
+        if (ruolo.isPresent() && !found.isPresent()){
+            log.info(ruolo.get().toString());
+
+            admin.getRuoli().add(ruolo.get());
+            log.info(admin.toString());
+            utenteRepository.save(admin);
+        }
     }
 }

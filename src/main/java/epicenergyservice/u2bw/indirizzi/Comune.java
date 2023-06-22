@@ -15,7 +15,7 @@ import java.util.UUID;
 public class Comune {
     @Id
     private UUID id = UUID.randomUUID();
-
+    private String codComune;
     @Column(length = 255)
     private String nome;
 
@@ -23,7 +23,8 @@ public class Comune {
     @JoinColumn
     private Provincia provincia;
 
-    public Comune(String nome, Provincia provincia) {
+    public Comune(String codComune, String nome, Provincia provincia) {
+        this.codComune = codComune;
         this.nome = nome;
         this.provincia = provincia;
     }

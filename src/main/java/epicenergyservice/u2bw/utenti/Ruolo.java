@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -12,9 +13,9 @@ import java.util.UUID;
 
 @Entity
 @Table(name="ruoli")
-@Data
 @NoArgsConstructor
 @Getter
+@Setter
 public class Ruolo {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,4 +32,11 @@ public class Ruolo {
         this.nome = nome;
     }
 
+    @Override
+    public String toString() {
+        return "Ruolo{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                '}';
+    }
 }
