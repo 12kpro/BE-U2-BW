@@ -65,13 +65,10 @@ public class FatturaService {
 
         TipoCliente statoCliente = cliente.getTipoCliente();
 
-        // Imposta lo stato di default della fattura
         StatoFattura statoFattura = new StatoFattura();
-        // Imposta lo stato predefinito (esempio: "non pagata")
         statoFattura.setStato("non pagata");
         fattura.setStatoFattura(statoFattura);
 
-        // Salva la fattura nel repository
         return fatturaRepository.save(fattura);
     }
 
