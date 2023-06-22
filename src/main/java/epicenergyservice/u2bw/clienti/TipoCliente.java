@@ -24,8 +24,8 @@ public class TipoCliente {
     public TipoCliente() {
     }
 
-    public TipoCliente(UUID id, String nome) {
-        this.id = id;
+    public TipoCliente(String nome) {
+//        this.id = id;
         this.nome = nome;
     }
 

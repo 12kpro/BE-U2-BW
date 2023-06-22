@@ -13,9 +13,11 @@ import java.util.UUID;
 
 @Repository
 public interface TipoClienteRepository extends JpaRepository<TipoCliente, UUID> {
-    Optional<TipoCliente> findByClienti_TipoCliente_Id(UUID id);
+//    Optional<TipoCliente> findByClienti_TipoCliente_Id(UUID id);
+//
+//    Optional<TipoCliente> findByClienti_TipoCliente_Nome(String nome);
 
-    Optional<TipoCliente> findByClienti_TipoCliente_Nome(String nome);
+    Optional<TipoCliente> findByNome(String nome);
 
 
 

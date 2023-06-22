@@ -10,6 +10,6 @@ import lombok.Setter;
 public class TipoClienteCreatePayload {
     @NotNull(message = "Il nome del tipo cliente è obbligatorio")
     private String nome;
-    @NotNull(message = "La descrizione del tipo cliente è obbligatoria")
-    private String descrizione;
+//    @NotNull(message = "La descrizione del tipo cliente è obbligatoria")
+//    private String descrizione;
 }
