@@ -28,8 +28,8 @@ public class TipoClienteService {
         return tipoClienteRepository.findByClienti_TipoCliente_Nome(nome);
     }
 
-    public Page<TipoCliente> getTipoClienteByCliente(Cliente cliente, Pageable pageable) {
-        return tipoClienteRepository.findByClienti_TipoCliente_Clienti(cliente, pageable);
+    public void deleteTipoCliente(UUID id) {
+        tipoClienteRepository.deleteById(id);
     }
 
 
