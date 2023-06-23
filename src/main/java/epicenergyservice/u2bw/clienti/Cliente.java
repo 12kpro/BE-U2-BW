@@ -9,12 +9,10 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,7 +21,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DialectOverride;
 import org.hibernate.annotations.Formula;
 
 @Entity
@@ -77,6 +74,23 @@ public class Cliente {
     @ManyToOne
     @JoinColumn(name = "indirizzo_sede_operativa_id")
     private Indirizzo indirizzoSedeOperativa;
+
+    public Cliente(String nomeContatto, String cognomeContatto, String emailContatto, LocalDate dataInserimento, LocalDate dataUltimoContatto, String email, String partitaIva, String pec, String ragioneSociale, String telefono, String telefonoContatto, TipoCliente tipoCliente, Indirizzo indirizzoSedeLegale, Indirizzo indirizzoSedeOperativa) {
+        this.nomeContatto = nomeContatto;
+        this.cognomeContatto = cognomeContatto;
+        this.emailContatto = emailContatto;
+        this.dataInserimento = dataInserimento;
+        this.dataUltimoContatto = dataUltimoContatto;
+        this.email = email;
+        this.partitaIva = partitaIva;
+        this.pec = pec;
+        this.ragioneSociale = ragioneSociale;
+        this.telefono = telefono;
+        this.telefonoContatto = telefonoContatto;
+        this.tipoCliente = tipoCliente;
+        this.indirizzoSedeLegale = indirizzoSedeLegale;
+        this.indirizzoSedeOperativa = indirizzoSedeOperativa;
+    }
 }
 
 

@@ -40,17 +40,17 @@ public class ClienteController {
     public Cliente getcliente(@PathVariable UUID clienteId) throws Exception {
         return clienteService.findById(clienteId);
     }
-
+    //TODO da testare POST
     @PostMapping("")
     @PostAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente savecliente(@RequestBody @Validated ClientiCreatePayloads body) {
         return clienteService.create(body);
     }
-
+    //TODO da testare PUT
     @PutMapping("/{clienteId}")
     @PostAuthorize("hasAuthority('ADMIN')")
-    public Cliente updatecliente(@PathVariable UUID clienteId, @RequestBody Cliente body) throws Exception {
+    public Cliente updatecliente(@PathVariable UUID clienteId, @RequestBody ClientiCreatePayloads body) throws Exception {
         return clienteService.findByIdAndUpdate(clienteId, body);
     }
 
@@ -62,94 +62,4 @@ public class ClienteController {
     }
 
 
-
-
-
-
-
-
-//    private final ClienteService clienteService;
-//
-//    public ClienteController(ClienteService clienteService) {
-//        this.clienteService = clienteService;
-//    }
-//
-//   /* @GetMapping("/{id}")
-//    public ResponseEntity<Cliente> getClienteById(@PathVariable UUID id) {
-//        Optional<Cliente> cliente = clienteService.findById(id);
-//        return cliente.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-//    }*/
-//
-//    @GetMapping("/nomecontatto")
-//    public ResponseEntity<Page<Cliente>> getClienteByNomeContatto(
-//            @RequestParam String nomeContatto,
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size
-//    ) {
-//        Page<Cliente> result = clienteService.findByNomeContatto(nomeContatto, page, size);
-//        return ResponseEntity.ok(result);
-//    }
-//
-//    @GetMapping("/email")
-//    public ResponseEntity<Page<Cliente>> getClienteByEmail(
-//            @RequestParam String email,
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size
-//    ) {
-//        Page<Cliente> result = clienteService.findByEmail(email, page, size);
-//        return ResponseEntity.ok(result);
-//    }
-//
-//    @GetMapping("/fatturato")
-//    public ResponseEntity<Page<Cliente>> filtraClientiPerFatturatoAnnuo(
-//            @RequestParam Double fatturato,
-//
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size
-//    ) {
-//        Page<Cliente> result = clienteService.filtraClientiPerFatturatoAnnuo(fatturato, page, size);
-//        return ResponseEntity.ok(result);
-//    }
-//
-//    @GetMapping("/inserimento")
-//    public ResponseEntity<Page<Cliente>> findByInserimento(
-//            @RequestParam String dataInserimento,
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size
-//    ) {
-//        LocalDate parsedDate = LocalDate.parse(dataInserimento);
-//        Page<Cliente> result = clienteService.findByInserimento(parsedDate, page, size);
-//        return ResponseEntity.ok(result);
-//    }
-//
-//    @GetMapping("/partname")
-//    public ResponseEntity<Page<Cliente>> searchByPartName(
-//            @RequestParam String partName,
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size
-//    ) {
-//        Page<Cliente> result = clienteService.searchByPartName(partName, page, size);
-//        return ResponseEntity.ok(result);
-//    }
-//
-//    @GetMapping("/ultimocontatto")
-//    public ResponseEntity<Cliente> findByUltimocontatto(
-//            @RequestParam String ultimoContatto,
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size
-//    ) {
-//        LocalDate parsedDate = LocalDate.parse(ultimoContatto);
-//        Cliente result = clienteService.findByUltimocontatto(parsedDate);
-//        return ResponseEntity.ok(result);
-//    }
-//
-//    @GetMapping("/provincia")
-//    public ResponseEntity<Page<Cliente>> searchByProvincia(
-//            @RequestParam Integer provincia,
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size
-//    ) {
-//        Page<Cliente> result = clienteService.searchByProvincia(provincia, page, size);
-//        return ResponseEntity.ok(result);
-//    }
 }

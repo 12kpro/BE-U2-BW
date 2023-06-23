@@ -2,18 +2,15 @@ package epicenergyservice.u2bw.clienti.payloads;
 
 
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import epicenergyservice.u2bw.clienti.TipoCliente;
-import epicenergyservice.u2bw.fatture.Fattura;
-import epicenergyservice.u2bw.indirizzi.Indirizzo;
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.List;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
@@ -31,9 +28,13 @@ public class ClientiCreatePayloads {
     private String emailContatto;
 
     @NotNull(message = "La data di inserimento è obbligatoria")
-    private String dataInserimento;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dataInserimento;
 
-    private String dataUltimoContatto;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dataUltimoContatto;
 
     @NotNull(message = "L'email è obbligatoria")
     @Email(message = "Non hai inserito un indirizzo email valido")
@@ -52,6 +53,9 @@ public class ClientiCreatePayloads {
     @Size(max = 20, message = "Il numero di telefono può contenere al massimo 20 caratteri")
     private String telefono;
 
+    @Size(max = 20, message = "Il numero di telefono può contenere al massimo 20 caratteri")
+    private String telefonoContatto;
+
     @NotNull(message = "Il tipo cliente è obbligatorio")
     private UUID tipoCliente;
 
@@ -61,8 +65,7 @@ public class ClientiCreatePayloads {
 
     private UUID indirizzoSedeOperativa;
 
-
-    public ClientiCreatePayloads(@NotNull(message = "Il nome del contatto è obbligatorio") String nomeContatto, String cognomeContatto, String emailContatto, @NotNull(message = "La data di inserimento è obbligatoria") String dataInserimento, String dataUltimoContatto, @NotNull(message = "L'email è obbligatoria") String email, String fatturatoAnnuale, @NotNull(message = "La partita IVA è obbligatoria") String partitaIva, @NotNull(message = "La PEC è obbligatoria") String pec, String ragioneSociale, String telefono, @NotNull(message = "Il tipo cliente è obbligatorio") UUID tipoCliente, @NotNull(message = "La sede legale è obbligatoria") UUID indirizzoSedeLegale, UUID indirizzoSedeOperativa) {
+    public ClientiCreatePayloads(@NotNull(message = "Il nome del contatto è obbligatorio") String nomeContatto, String cognomeContatto, String emailContatto, @NotNull(message = "La data di inserimento è obbligatoria") LocalDate dataInserimento, LocalDate dataUltimoContatto, @NotNull(message = "L'email è obbligatoria") String email, @NotNull(message = "La partita IVA è obbligatoria") String partitaIva, @NotNull(message = "La PEC è obbligatoria") String pec, String ragioneSociale, String telefono, String telefonoContatto, @NotNull(message = "Il tipo cliente è obbligatorio") UUID tipoCliente, @NotNull(message = "La sede legale è obbligatoria") UUID indirizzoSedeLegale, UUID indirizzoSedeOperativa) {
         this.nomeContatto = nomeContatto;
         this.cognomeContatto = cognomeContatto;
         this.emailContatto = emailContatto;
@@ -73,6 +76,7 @@ public class ClientiCreatePayloads {
         this.pec = pec;
         this.ragioneSociale = ragioneSociale;
         this.telefono = telefono;
+        this.telefonoContatto = telefonoContatto;
         this.tipoCliente = tipoCliente;
         this.indirizzoSedeLegale = indirizzoSedeLegale;
         this.indirizzoSedeOperativa = indirizzoSedeOperativa;
