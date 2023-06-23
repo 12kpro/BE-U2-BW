@@ -6,6 +6,7 @@ import epicenergyservice.u2bw.indirizzi.Provincia;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -22,6 +23,8 @@ public interface ClienteRepository extends JpaRepository<Cliente, UUID> {
     Page<Cliente> findByRagioneSocialeContainsIgnoreCase(String ragioneSociale, Pageable pageable);
     Page<Cliente> findByDataUltimoContatto(LocalDate dataUltimoContatto, Pageable pageable);
     Page<Cliente> findByIndirizzoSedeLegale_Comune_Provincia(Provincia provincia, Pageable pageable);
+
+    Page<Cliente> findByDataInserimentoAndRagioneSocialeIgnoreCaseAndFatturatoAnnualeAndDataUltimoContattoAndIndirizzoSedeLegale_Comune_Provincia(@Nullable LocalDate dataInserimento, @Nullable String ragioneSociale, @Nullable Double fatturatoAnnuale, @Nullable LocalDate dataUltimoContatto, @Nullable Provincia provincia, Pageable pageable);
 
     //Page<Cliente> filtraClientiPerFatturatoAnnuo(double minFatturato, double maxFatturato, Pageable pageable);
     //Page<Cliente> findByNomeContattoContainsIgnoreCase(String nomeContatto, Pageable pageable);

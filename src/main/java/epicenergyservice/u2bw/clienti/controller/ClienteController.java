@@ -18,7 +18,7 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequestMapping("/clienti")
-@PreAuthorize("hasAuthority('ADMIN') || hasAuthority('cliente')")
+@PreAuthorize("hasAuthority('ADMIN') || hasAuthority('USER')")
 public class ClienteController {
 
     @Autowired
@@ -32,6 +32,7 @@ public class ClienteController {
             res = clienteService.find(page, size, sortBy);
         }else{
             log.info(body.toString());
+            res = clienteService.findQuery(body, page, size, sortBy);
             //TODO implementare if per query custom
 //            findByFatturatoAnnuale
 //            findByDataInserimento

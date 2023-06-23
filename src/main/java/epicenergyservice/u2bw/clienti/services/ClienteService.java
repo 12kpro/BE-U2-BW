@@ -2,6 +2,7 @@ package epicenergyservice.u2bw.clienti.services;
 
 import epicenergyservice.u2bw.clienti.Cliente;
 import epicenergyservice.u2bw.clienti.TipoCliente;
+import epicenergyservice.u2bw.clienti.payloads.ClienteGetPayload;
 import epicenergyservice.u2bw.clienti.payloads.ClientiCreatePayloads;
 import epicenergyservice.u2bw.clienti.repositories.ClienteRepository;
 import epicenergyservice.u2bw.exceptions.BadRequestException;
@@ -54,52 +55,63 @@ public class ClienteService {
 
         return clienteRepository.findAll(pageable);
     }
-
-    public Page<Cliente> findByFatturatoAnnuale(Double fatturato, int page, int size, String sortBy) {
+    public Page<Cliente> findQuery(ClienteGetPayload body, int page, int size, String sortBy) {
+        Provincia provincia = null;
         if (size < 0)
             size = 10;
         if (size > 100)
             size = 100;
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-
-        return clienteRepository.findByFatturatoAnnuale(fatturato,pageable);
+        if(body.getProvinciaSedeLegaleId() != null){
+           provincia = provinceService.findById(body.getProvinciaSedeLegaleId());
+        }
+        return clienteRepository.findByDataInserimentoAndRagioneSocialeIgnoreCaseAndFatturatoAnnualeAndDataUltimoContattoAndIndirizzoSedeLegale_Comune_Provincia(body.getDataInserimento(), body.getRagioneSociale(), body.getFatturatoAnnuale(),body.getDataUltimoContatto(), provincia,pageable);
     }
-    public Page<Cliente> findByDataInserimento(LocalDate dataInserimento, int page, int size, String sortBy) {
-        if (size < 0)
-            size = 10;
-        if (size > 100)
-            size = 100;
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-
-        return clienteRepository.findByDataInserimento(dataInserimento,pageable);
-    }
-    public Page<Cliente> findByRagioneSocialeContainsIgnoreCase(String nome, int page, int size, String sortBy) {
-        if (size < 0)
-            size = 10;
-        if (size > 100)
-            size = 100;
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-
-        return clienteRepository.findByRagioneSocialeContainsIgnoreCase(nome,pageable);
-    }
-    public Page<Cliente> findByDataUltimoContatto(LocalDate dataContatto,int page, int size, String sortBy) {
-        if (size < 0)
-            size = 10;
-        if (size > 100)
-            size = 100;
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-
-        return clienteRepository.findByDataUltimoContatto(dataContatto,pageable);
-    }
-    public Page<Cliente> findByIndirizzoSedeLegale_Comune_Provincia(Integer provinciaId,int page, int size, String sortBy) {
-        if (size < 0)
-            size = 10;
-        if (size > 100)
-            size = 100;
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        Provincia p = provinceService.findById(provinciaId);
-        return clienteRepository.findByIndirizzoSedeLegale_Comune_Provincia(p,pageable);
-    }
+//    public Page<Cliente> findByFatturatoAnnuale(Double fatturato, int page, int size, String sortBy) {
+//        if (size < 0)
+//            size = 10;
+//        if (size > 100)
+//            size = 100;
+//        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+//
+//        return clienteRepository.findByFatturatoAnnuale(fatturato,pageable);
+//    }
+//    public Page<Cliente> findByDataInserimento(LocalDate dataInserimento, int page, int size, String sortBy) {
+//        if (size < 0)
+//            size = 10;
+//        if (size > 100)
+//            size = 100;
+//        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+//
+//        return clienteRepository.findByDataInserimento(dataInserimento,pageable);
+//    }
+//    public Page<Cliente> findByRagioneSocialeContainsIgnoreCase(String nome, int page, int size, String sortBy) {
+//        if (size < 0)
+//            size = 10;
+//        if (size > 100)
+//            size = 100;
+//        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+//
+//        return clienteRepository.findByRagioneSocialeContainsIgnoreCase(nome,pageable);
+//    }
+//    public Page<Cliente> findByDataUltimoContatto(LocalDate dataContatto,int page, int size, String sortBy) {
+//        if (size < 0)
+//            size = 10;
+//        if (size > 100)
+//            size = 100;
+//        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+//
+//        return clienteRepository.findByDataUltimoContatto(dataContatto,pageable);
+//    }
+//    public Page<Cliente> findByIndirizzoSedeLegale_Comune_Provincia(Integer provinciaId,int page, int size, String sortBy) {
+//        if (size < 0)
+//            size = 10;
+//        if (size > 100)
+//            size = 100;
+//        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+//        Provincia p = provinceService.findById(provinciaId);
+//        return clienteRepository.findByIndirizzoSedeLegale_Comune_Provincia(p,pageable);
+//    }
     public Cliente findById(UUID id) throws NotFoundException {
         return clienteRepository.findById(id).orElseThrow(() -> new NotFoundException("Utete con Id:" + id + "non trovato!!"));
     }

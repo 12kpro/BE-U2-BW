@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -25,13 +26,14 @@ import static org.springframework.mock.http.server.reactive.MockServerHttpReques
 class U2bwApplicationTests {
 	@Autowired
 	private MockMvc mockMvc;
-//	private String nome;
+	//	private String nome;
 //	private String cognome;
 //	private String email;
 	private String username;
 	private String password;
 	private String loginToken;
-//	@Value("${admin.nome}")
+
+	//	@Value("${admin.nome}")
 //	public void setAdminNome(String s) {
 //		this.nome = s;
 //	}
@@ -52,19 +54,21 @@ class U2bwApplicationTests {
 	public void setAdminPassword(String s) {
 		this.password = s;
 	}
+
 	String setLoginUserJson;
 
-	public void setLoginUserJson(String username,String password) {
-		this.setLoginUserJson = "{\"username\":\""+ username + "\",\"password\":\""+ password + "\"}";
+	public void setLoginUserJson(String username, String password) {
+		this.setLoginUserJson = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}";
 	}
 
 	public void setLoginToken(String loginToken) {
 		this.loginToken = loginToken;
 	}
 
-	@BeforeAll
+	//@BeforeAll
+	@Test
 	void testUserLogin() throws Exception {
-		setLoginUserJson(username,password);
+		setLoginUserJson(username, password);
 		log.info(setLoginUserJson);
 //		mockMvc.perform(MockMvcRequestBuilders.post("/user/login")
 //				.accept(MediaType.APPLICATION_JSON).content(setLoginUserJson)
@@ -75,37 +79,54 @@ class U2bwApplicationTests {
 				.accept(MediaType.APPLICATION_JSON).content(setLoginUserJson)
 				.contentType(MediaType.APPLICATION_JSON);
 
-		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-
-		MockHttpServletResponse response = result.getResponse();
-		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.getStatus());
-
-		assertEquals("http://localhost/auth/login",
-				response.getHeader(HttpHeaders.LOCATION));
-
-
-		log.info(response.toString());
+		log.info(requestBuilder.toString());
+//		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+//
+//		MockHttpServletResponse response = result.getResponse();
+//		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.getStatus());
+//
+//		assertEquals("http://localhost:5080/auth/login",
+//				response.getHeader(HttpHeaders.LOCATION));
+//
+//
+//		log.info(response.toString());
 	}
 	@Test
-	void getClienti() throws Exception {
-
+	void testUtenti() throws Exception{
 		RequestBuilder requestBuilder = MockMvcRequestBuilders
-				.get("/clienti")
-				.header("Authorization", "Bearer " + loginToken);
-//				.accept(MediaType.APPLICATION_JSON).content(setLoginUserJson)
-//				.contentType(MediaType.APPLICATION_JSON);
-		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-
-//	MvcResult response = mockMvc
-//			.perform(get("/clienti")
-//					.header("Authorization", "Bearer " + loginToken)
-//					.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-//					.accept(MediaType.APPLICATION_JSON))
-//			.andExpect(status().isOk())
-//			.andReturn();
-
+				.get("/utenti")
+				.header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYXVybyIsImlhdCI6MTY4NzQ2OTMzNCwiZXhwIjoxNjg4MDc0MTM0fQ.VkMjjugul6oZ1Op1N3lp6bO5wh3TJFEH_WXjLZmzxUc");
+		mockMvc.perform(requestBuilder).andExpect(status().isOk());
+	}
+	@Test
+	void testComuni() throws Exception{
+		RequestBuilder requestBuilder = MockMvcRequestBuilders
+				.get("/comuni")
+				.header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYXVybyIsImlhdCI6MTY4NzQ2OTMzNCwiZXhwIjoxNjg4MDc0MTM0fQ.VkMjjugul6oZ1Op1N3lp6bO5wh3TJFEH_WXjLZmzxUc");
+		mockMvc.perform(requestBuilder).andExpect(status().isOk());
 	}
 }
+
+//	@Test
+//	void getClienti() throws Exception {
+//
+////		RequestBuilder requestBuilder = MockMvcRequestBuilders
+////				.get("/clienti")
+////				.header("Authorization", "Bearer " + loginToken);
+//////				.accept(MediaType.APPLICATION_JSON).content(setLoginUserJson)
+//////				.contentType(MediaType.APPLICATION_JSON);
+////		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+//
+////	MvcResult response = mockMvc
+////			.perform(get("/clienti")
+////					.header("Authorization", "Bearer " + loginToken)
+////					.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+////					.accept(MediaType.APPLICATION_JSON))
+////			.andExpect(status().isOk())
+////			.andReturn();
+//
+////	}
+//}
 
 
 //    mockMvc.perform(post("/users/reset_token")

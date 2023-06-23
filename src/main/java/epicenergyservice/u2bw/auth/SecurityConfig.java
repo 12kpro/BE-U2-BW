@@ -36,6 +36,11 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> auth.requestMatchers("/ruoli/**").authenticated());
         http.authorizeHttpRequests(auth -> auth.requestMatchers("/indirizzo/**").authenticated());
         http.authorizeHttpRequests(auth -> auth.requestMatchers("/fatture/**").authenticated());
+        http.authorizeHttpRequests(auth -> auth.requestMatchers("/comuni/**").authenticated());
+        http.authorizeHttpRequests(auth -> auth.requestMatchers("/province/**").authenticated());
+        http.authorizeHttpRequests(auth -> auth.requestMatchers("/statofatture/**").authenticated());
+        http.authorizeHttpRequests(auth -> auth.requestMatchers("/tipocliente/**").authenticated());
+        http.authorizeHttpRequests(auth -> auth.requestMatchers("/clienti/**").authenticated());
 
         //http.addFilterBefore(exceptionHandlerFilter, JWTAuthFilter.class);
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

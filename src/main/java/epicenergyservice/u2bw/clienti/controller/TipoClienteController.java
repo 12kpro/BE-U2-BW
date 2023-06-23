@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/tipo-cliente")
+@RequestMapping("/tipocliente")
 @PreAuthorize("hasAuthority('ADMIN')")
 public class TipoClienteController {
 
