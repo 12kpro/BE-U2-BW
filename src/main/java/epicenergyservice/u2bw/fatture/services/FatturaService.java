@@ -28,6 +28,7 @@ public class FatturaService {
     @Autowired
     private FatturaRepository fatturaRepository;
 
+
     @Autowired
     private StatoFatturaService statoFatturaService;
 

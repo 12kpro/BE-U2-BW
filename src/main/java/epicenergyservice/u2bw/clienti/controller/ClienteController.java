@@ -39,14 +39,14 @@ public class ClienteController {
     public Cliente getcliente(@PathVariable UUID clienteId) throws Exception {
         return clienteService.findById(clienteId);
     }
-    //TODO da testare POST
+
     @PostMapping("")
     @PostAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente savecliente(@RequestBody @Validated ClientiCreatePayloads body) {
         return clienteService.create(body);
     }
-    //TODO da testare PUT
+
     @PutMapping("/{clienteId}")
     @PostAuthorize("hasAuthority('ADMIN')")
     public Cliente updatecliente(@PathVariable UUID clienteId, @RequestBody ClientiCreatePayloads body) throws Exception {

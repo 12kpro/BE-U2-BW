@@ -55,7 +55,8 @@ public class ComuniService {
 
         return comuniRepository.save(c);
     }
-    public void findByIdAndDelete(UUID id) throws NotFoundException {
+    public void findByIdAndDelete(UUID id ) throws NotFoundException {
+
         Comune found = this.findById(id);
         comuniRepository.delete(found);
     }

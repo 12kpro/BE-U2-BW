@@ -51,15 +51,16 @@ public class IndirizzoService {
     }
 
 
-    public Indirizzo findByIdAndUpdate(UUID id, Indirizzo i) throws NotFoundException {
+    public Indirizzo findByIdAndUpdate(UUID id, IndirizzoCreatePayload i) throws NotFoundException {
         Indirizzo found = this.findById(id);
+Comune c= comuniService.findById(i.getComune());
 
        found.setId(id);
        found.setVia(i.getVia());
        found.setCivico(i.getCivico());
-        found.setLocalita(i.getLocalita());
+        found.setLocalita(i.getLocalità());
         found.setCap(i.getCap());
-        found.setComune(i.getComune());
+        found.setComune(c);
 
         return indirizzoRepository.save(found);
     }

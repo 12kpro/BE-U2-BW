@@ -17,7 +17,7 @@ import java.util.UUID;
 @Getter
 @Setter
 public class FatturaCreatePayload {
-    @NotBlank(message = "Il numero è obbligatorio")
+    @NotNull(message = "Il numero è obbligatorio")
     private Integer numero;
 
     @NotNull(message = "La data è obbligatoria")
@@ -33,7 +33,8 @@ public class FatturaCreatePayload {
     @NotNull(message = "Il cliente è obbligatorio")
     private UUID cliente;
 
-    public FatturaCreatePayload(int numero, @NotNull(message = "La data è obbligatoria") LocalDateTime data, @NotNull(message = "L'importo è obbligatorio") Double importo, @NotNull(message = "Il cliente è obbligatorio") UUID cliente) {
+
+    public FatturaCreatePayload(@NotNull(message = "Il numero è obbligatorio") Integer numero, @NotNull(message = "La data è obbligatoria") LocalDateTime data, @NotNull(message = "L'importo è obbligatorio") Double importo, @NotNull(message = "Il cliente è obbligatorio") UUID cliente) {
         this.numero = numero;
         this.data = data;
         this.importo = importo;

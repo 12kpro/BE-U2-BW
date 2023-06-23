@@ -17,4 +17,5 @@ public interface FatturaRepository extends JpaRepository<Fattura, UUID> {
     Optional<Fattura> findByNumeroAndCliente_Id(Integer numero, UUID id);
 
     Page<Fattura> findByDataAndAnnoAndImportoBetweenAndCliente_IdAndStatoFattura_Id(@Nullable LocalDateTime data, @Nullable Integer anno, @Nullable Double importoStart, @Nullable Double importoEnd, @Nullable UUID id, @Nullable UUID id1, Pageable pageable);
+
 }

@@ -20,7 +20,7 @@ import java.util.UUID;
 @RequestMapping("/utenti")
 @PreAuthorize("hasAuthority('ADMIN') || hasAuthority('USER')")
 
-// TODO Verificare il funzionamento per utenti con più ruoli
+
 public class UtenteController {
     @Autowired
     private UtenteService utenteService;
