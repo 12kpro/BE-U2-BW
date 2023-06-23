@@ -44,7 +44,7 @@ public class Cliente {
     private LocalDate dataUltimoContatto;
     @Column(length = 255)
     private String email;
-    // TODO verificare la query
+
     @Formula("SELECT SUM(f.importo) FROM fatture f WHERE f.cliente_id=id GROUP BY f.importo")
     @Column(columnDefinition = "numeric(19,2)")
     private Double fatturatoAnnuale;

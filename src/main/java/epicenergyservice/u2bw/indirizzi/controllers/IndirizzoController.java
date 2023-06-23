@@ -39,7 +39,7 @@ public class IndirizzoController {
         return indirizzoService.create(body);
     }
 
-    //TODO Da Verificare
+
     @PutMapping("/{indirizzoId}")
     @PostAuthorize("hasAuthority('ADMIN')")
     public Indirizzo updateIndirizzo(@PathVariable UUID indirizzoId, @RequestBody IndirizzoCreatePayload body) throws Exception {
