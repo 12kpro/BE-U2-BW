@@ -1,16 +1,16 @@
 ## Mauro
 - [x] Importazione CSV
-- [ ] Verifica gestione ruoli su endpoint /users
+- [x] Verifica gestione ruoli su endpoint /users
 - 
 #### Comuni
 Endpoint /comuni
 Autorizzazioni: USER GET, ADMIN ALL
-- [ ] GET all
+- [x] GET all
 
 #### Province
 Endpoint /comuni
 Autorizzazioni: USER GET, ADMIN ALL
-- [ ] GET all
+- [x] GET all
 
 
 

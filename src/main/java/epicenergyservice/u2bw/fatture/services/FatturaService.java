@@ -29,6 +29,7 @@ public class FatturaService {
     private final ClienteRepository clienteRepository;
     @Autowired
     ClienteService clienteService;
+
     @Autowired
     public FatturaService(FatturaRepository fatturaRepository, ClienteRepository clienteRepository) {
         this.fatturaRepository = fatturaRepository;
@@ -45,7 +46,7 @@ public class FatturaService {
             BigDecimal maxImporto
     ) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(sortBy));
-        return fatturaRepository.find(pageRequest, data, anno, minImporto, maxImporto);
+        return fatturaRepository.findByDataAndAnnoAndImportoBetween(data, anno, minImporto, maxImporto, pageRequest);
     }
 
     public Fattura getFattura(UUID fatturaId) throws NotFoundException {
@@ -53,7 +54,6 @@ public class FatturaService {
                 .orElseThrow(() -> new NotFoundException("Fattura non trovata"));
     }
 
-    // TODO Recuperare stato fattura da stato default (non pagata)
     public Fattura createFattura(FatturaCreatePayload payload) {
         Fattura fattura = new Fattura();
         fattura.setData(payload.getData());
@@ -65,12 +65,13 @@ public class FatturaService {
 
         TipoCliente statoCliente = cliente.getTipoCliente();
 
-
+        StatoFattura statoFattura = new StatoFattura();
+        statoFattura.setStato("non pagata");
+        fattura.setStatoFattura(statoFattura);
 
         return fatturaRepository.save(fattura);
     }
 
-    // TODO creare un payload per fattura update e passare data e stato
     public Fattura updateFattura(UUID fatturaId, FatturaCreatePayload payload) throws NotFoundException {
         Fattura fattura = fatturaRepository.findById(fatturaId)
                 .orElseThrow(() -> new NotFoundException("Fattura non trovata"));

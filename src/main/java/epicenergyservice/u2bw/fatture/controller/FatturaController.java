@@ -18,7 +18,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/fatture")
-@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+@PreAuthorize("hasAuthority('ADMIN') || hasAuthority('USER')")
 public class FatturaController {
 
     private final FatturaService fatturaService;
@@ -47,20 +47,20 @@ public class FatturaController {
     }
 
     @PostMapping("")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public Fattura saveFattura(@RequestBody @Validated FatturaCreatePayload body) {
         return fatturaService.createFattura(body);
     }
 
     @PutMapping("/{fatturaId}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Fattura updateFattura(@PathVariable UUID fatturaId, @RequestBody @Validated FatturaCreatePayload body) throws NotFoundException {
         return fatturaService.updateFattura(fatturaId, body);
     }
 
     @DeleteMapping("/{fatturaId}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteFattura(@PathVariable UUID fatturaId) throws NotFoundException {
         fatturaService.deleteFattura(fatturaId);
