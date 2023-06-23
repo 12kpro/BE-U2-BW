@@ -35,6 +35,7 @@ public class ComuniController {
         return comuniService.create(body);
     }
 
+    //TODO Verificare Errore
     @PutMapping("")
     public Comune updateComuni(@RequestBody Comune body) throws Exception {
         return comuniService.update(body);
