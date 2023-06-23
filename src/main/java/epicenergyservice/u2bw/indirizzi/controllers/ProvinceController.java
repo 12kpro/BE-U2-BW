@@ -1,19 +1,14 @@
 package epicenergyservice.u2bw.indirizzi.controllers;
 
 import epicenergyservice.u2bw.exceptions.NotFoundException;
-import epicenergyservice.u2bw.indirizzi.Comune;
 import epicenergyservice.u2bw.indirizzi.Provincia;
-import epicenergyservice.u2bw.indirizzi.payloads.ComuneCreatePayload;
 import epicenergyservice.u2bw.indirizzi.payloads.ProvinciaCreatePayload;
-import epicenergyservice.u2bw.indirizzi.services.ComuniService;
 import epicenergyservice.u2bw.indirizzi.services.ProvinceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/province")

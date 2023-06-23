@@ -3,11 +3,6 @@ package epicenergyservice.u2bw.clienti.payloads;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import epicenergyservice.u2bw.clienti.TipoCliente;
-import epicenergyservice.u2bw.fatture.Fattura;
-import epicenergyservice.u2bw.indirizzi.Indirizzo;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -16,7 +11,6 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
 
 @Getter
