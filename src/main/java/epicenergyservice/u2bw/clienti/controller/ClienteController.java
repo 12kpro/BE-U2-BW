@@ -31,7 +31,6 @@ public class ClienteController {
         if (body == null){
             res = clienteService.find(page, size, sortBy);
         }else{
-            log.info(body.toString());
             res = clienteService.findByParams(body, page, size, sortBy);
         }
         return res;

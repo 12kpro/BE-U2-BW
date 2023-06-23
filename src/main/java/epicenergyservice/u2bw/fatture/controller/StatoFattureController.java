@@ -8,7 +8,6 @@ import epicenergyservice.u2bw.fatture.StatoFattura;
 import epicenergyservice.u2bw.fatture.services.StatoFatturaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -36,20 +35,17 @@ public class StatoFattureController {
         return statoFatturaService.findByNome(nome);
     }
     @PostMapping("")
-    @PostAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public StatoFattura saveStatoFattura(@RequestBody @Validated StatoFatturaCreatePayload body) {
         return statoFatturaService.create(body);
     }
 
     @PutMapping("/{statoFatturaId}")
-    @PostAuthorize("hasAuthority('ADMIN')")
     public StatoFattura updateStatoFattura(@PathVariable UUID statoFatturaId, @RequestBody StatoFattura body) throws Exception {
         return statoFatturaService.findByIdAndUpdate(statoFatturaId, body);
     }
 
     @DeleteMapping("/{statoFatturaId}")
-    @PostAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteStatoFattura(@PathVariable UUID statoFatturaId) throws NotFoundException {
         statoFatturaService.findByIdAndDelete(statoFatturaId);

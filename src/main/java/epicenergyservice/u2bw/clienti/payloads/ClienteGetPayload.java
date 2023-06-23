@@ -34,8 +34,3 @@ public class ClienteGetPayload {
         this.provinciaSedeLegaleId = provinciaSedeLegaleId;
     }
 }
-//Nome
-//Fatturato annuale
-//Data di inserimento
-//Data di ultimo contatto
-//Provincia della sede legale.
