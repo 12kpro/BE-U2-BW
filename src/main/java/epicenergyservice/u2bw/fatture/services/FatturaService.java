@@ -46,8 +46,16 @@ public class FatturaService {
             BigDecimal maxImporto
     ) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(sortBy));
-        return fatturaRepository.findByDataAndAnnoAndImportoBetween(data, anno, minImporto, maxImporto, pageRequest);
+
+        if (anno == null) {
+
+            return fatturaRepository.findByDataAndImportoBetween(data, minImporto, maxImporto, pageRequest);
+        } else {
+
+            return fatturaRepository.findByDataAndAnnoAndImportoBetween(data, anno, minImporto, maxImporto, pageRequest);
+        }
     }
+
 
     public Fattura getFattura(UUID fatturaId) throws NotFoundException {
         return fatturaRepository.findById(fatturaId)
