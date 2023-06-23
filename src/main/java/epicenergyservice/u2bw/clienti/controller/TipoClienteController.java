@@ -32,7 +32,7 @@ public class TipoClienteController {
         return tipoClienteService.find(page, size, sortBy);
     }
     @GetMapping("/{tipoId}")
-    public TipoCliente getUser(@PathVariable UUID tipoId) throws Exception {
+    public TipoCliente getTipoCliente(@PathVariable UUID tipoId) throws Exception {
         return tipoClienteService.findById(tipoId);
     }
     @GetMapping("/{nome}")
@@ -42,20 +42,20 @@ public class TipoClienteController {
     @PostMapping("")
     @PostAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    public TipoCliente saveUser(@RequestBody @Validated TipoClienteCreatePayload body) {
+    public TipoCliente saveTipoCliente(@RequestBody @Validated TipoClienteCreatePayload body) {
         return tipoClienteService.create(body);
     }
 
     @PutMapping("/{tipoId}")
     @PostAuthorize("hasAuthority('ADMIN')")
-    public TipoCliente updateUser(@PathVariable UUID tipoId, @RequestBody TipoCliente body) throws Exception {
+    public TipoCliente updateTipoCliente(@PathVariable UUID tipoId, @RequestBody TipoCliente body) throws Exception {
         return tipoClienteService.findByIdAndUpdate(tipoId, body);
     }
 
     @DeleteMapping("/{tipoId}")
     @PostAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable UUID tipoId) throws NotFoundException {
+    public void deleteTipoCliente(@PathVariable UUID tipoId) throws NotFoundException {
         tipoClienteService.findByIdAndDelete(tipoId);
     }
 

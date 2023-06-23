@@ -43,7 +43,7 @@ public class setupRunner implements CommandLineRunner {
 
     private String[] ruoliDefault = new String[]{"USER","ADMIN"};
     private String[] tipoClienteDefault = new String[]{"SAS","SRL","SPA","SS","PA"};
-    private String[] statoFattureDefault = new String[]{"PAGATO","NO_PAGATO"};
+    private String[] statoFattureDefault = new String[]{"PAGATO","NON_PAGATO"};
     @Autowired
     RuoloRepository ruoloRepository;
     @Autowired

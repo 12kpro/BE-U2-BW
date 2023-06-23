@@ -10,5 +10,6 @@ import java.util.UUID;
 
 @Repository
 public interface StatoFatturaRepository extends JpaRepository<StatoFattura, UUID> {
-    Optional<StatoFattura> findByFattura(Fattura fattura);
+    Optional<StatoFattura> findByStatoIgnoreCase(String stato);
+
 }
