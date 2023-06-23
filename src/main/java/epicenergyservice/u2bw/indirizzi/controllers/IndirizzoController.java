@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
+@RestController
 @RequestMapping("/indirizzo")
 @PreAuthorize("hasAuthority('ADMIN') || hasAuthority('USER')")
 public class IndirizzoController {
