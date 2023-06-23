@@ -55,7 +55,7 @@ public class ClienteService {
 
         return clienteRepository.findAll(pageable);
     }
-    public Page<Cliente> findQuery(ClienteGetPayload body, int page, int size, String sortBy) {
+    public Page<Cliente> findByParams(ClienteGetPayload body, int page, int size, String sortBy) {
         Provincia provincia = null;
         if (size < 0)
             size = 10;

@@ -32,13 +32,7 @@ public class ClienteController {
             res = clienteService.find(page, size, sortBy);
         }else{
             log.info(body.toString());
-            res = clienteService.findQuery(body, page, size, sortBy);
-            //TODO implementare if per query custom
-//            findByFatturatoAnnuale
-//            findByDataInserimento
-//            findByRagioneSocialeContainsIgnoreCase
-//            findByDataUltimoContatto
-//            findByIndirizzoSedeLegale_Comune_Provincia
+            res = clienteService.findByParams(body, page, size, sortBy);
         }
         return res;
     }
