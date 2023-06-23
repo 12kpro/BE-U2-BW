@@ -1,19 +1,18 @@
 package epicenergyservice.u2bw;
 
-import epicenergyservice.u2bw.exceptions.NotFoundException;
+import epicenergyservice.u2bw.clienti.TipoCliente;
+import epicenergyservice.u2bw.clienti.repositories.TipoClienteRepository;
+import epicenergyservice.u2bw.fatture.StatoFattura;
+import epicenergyservice.u2bw.fatture.repositories.StatoFatturaRepository;
 import epicenergyservice.u2bw.indirizzi.Comune;
 import epicenergyservice.u2bw.indirizzi.Provincia;
-import epicenergyservice.u2bw.indirizzi.payloads.ComuneCreatePayload;
-import epicenergyservice.u2bw.indirizzi.payloads.ProvinciaCreatePayload;
 import epicenergyservice.u2bw.indirizzi.repositories.ComuniRepository;
 import epicenergyservice.u2bw.indirizzi.repositories.ProvinceRepository;
-import epicenergyservice.u2bw.indirizzi.services.ComuniService;
-import epicenergyservice.u2bw.indirizzi.services.ProvinceService;
 import epicenergyservice.u2bw.utenti.Ruolo;
 import epicenergyservice.u2bw.utenti.Utente;
 import epicenergyservice.u2bw.utenti.repositories.RuoloRepository;
 import epicenergyservice.u2bw.utenti.repositories.UtenteRepository;
-import epicenergyservice.u2bw.utenti.services.RuoloService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -29,7 +28,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +42,8 @@ public class setupRunner implements CommandLineRunner {
     private String password;
 
     private String[] ruoliDefault = new String[]{"USER","ADMIN"};
+    private String[] tipoClienteDefault = new String[]{"SAS","SRL","SPA","SS","PA"};
+    private String[] statoFattureDefault = new String[]{"PAGATO","NO_PAGATO"};
     @Autowired
     RuoloRepository ruoloRepository;
     @Autowired
@@ -53,7 +53,10 @@ public class setupRunner implements CommandLineRunner {
 
     @Autowired
     UtenteRepository utenteRepository;
-
+    @Autowired
+    TipoClienteRepository tipoClienteRepository;
+    @Autowired
+    StatoFatturaRepository statoFatturaRepository;
     @Autowired
     private PasswordEncoder bcrypt;
     @Value("${firstrun}")
@@ -83,6 +86,7 @@ public class setupRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         if (firstRun) {
+            loadDefault();
             loadCsv();
             firstUserCreate();
         }
@@ -144,11 +148,6 @@ public class setupRunner implements CommandLineRunner {
         log.info(codiciComuniNotValid.toString());
     }
     public void firstUserCreate(){
-        if(ruoloRepository.count() == 0) {
-            for (String ruolo : ruoliDefault) {
-                ruoloRepository.save(new Ruolo(ruolo));
-            }
-        }
         //TODO nick prende un valore inesistente nei file properties e env
         Optional<Utente> found = utenteRepository.findByEmail(email);
         Utente admin = new Utente(cognome,email,nome,bcrypt.encode(password),username);
@@ -160,6 +159,24 @@ public class setupRunner implements CommandLineRunner {
             admin.getRuoli().add(ruolo.get());
             log.info(admin.toString());
             utenteRepository.save(admin);
+        }
+    }
+
+    public void loadDefault(){
+        if(ruoloRepository.count() == 0) {
+            for (String ruolo : ruoliDefault) {
+                ruoloRepository.save(new Ruolo(ruolo));
+            }
+        }
+        if(statoFatturaRepository.count() == 0) {
+            for (String stato : statoFattureDefault) {
+                statoFatturaRepository.save(new StatoFattura(stato));
+            }
+        }
+        if(tipoClienteRepository.count() == 0) {
+            for (String tipo : tipoClienteDefault) {
+                tipoClienteRepository.save(new TipoCliente(tipo));
+            }
         }
     }
 }
