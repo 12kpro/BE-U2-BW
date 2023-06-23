@@ -9,7 +9,7 @@ import lombok.Setter;
 import java.util.UUID;
 
 
-//Un indirizzo Ã¨ composto da
+
 
 
 
@@ -30,18 +30,14 @@ public class IndirizzoCreatePayload {
     @Size(min = 3, max = 30, message = "Nome min 3 caratteri, massimo 30")
     String cap;
     @NotNull(message = "il comune è obbligatorio")
-    @Size(min = 3, max = 30, message = "Nome min 3 caratteri, massimo 30")
     UUID comune;
 
 
-
-
-    public IndirizzoCreatePayload(@NotNull(message = "La via è obbligatoria") String via, @NotNull(message = "Il civico è obbligatorio") String civico, @NotNull(message = "La località è obbligatoria") String località, @NotNull(message = "Il cap è obbligatorio") String cap, @NotNull(message = "il comune è obbligatorio") String comune) {
+    public IndirizzoCreatePayload(@NotNull(message = "La via è obbligatoria") String via, @NotNull(message = "Il civico è obbligatorio") String civico, @NotNull(message = "La località è obbligatoria") String località, @NotNull(message = "il cap è obbligatorio") String cap, @NotNull(message = "il comune è obbligatorio") UUID comune) {
         this.via = via;
         this.civico = civico;
         this.località = località;
         this.cap = cap;
-        this.comune = UUID.fromString(comune);
+        this.comune = comune;
     }
-
 }
