@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
+//TODO Tutti gli endpoint danno un 403 VERIFICARE
 @RequestMapping("/indirizzo")
 @PreAuthorize("hasAuthority('ADMIN') || hasAuthority('USER')")
 public class IndirizzoController {

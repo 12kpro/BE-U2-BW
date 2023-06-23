@@ -23,4 +23,6 @@ public interface FatturaRepository extends JpaRepository<Fattura, UUID> {
     Page<Fattura> findByImportoBetween(BigDecimal importoStart, BigDecimal importoEnd, Pageable pageable);
 
     Page<Fattura> findByDataAndAnnoAndImportoBetween(LocalDateTime data, int anno, BigDecimal importoStart, BigDecimal importoEnd, Pageable pageable);
+
+    Page<Fattura> findByDataAndImportoBetween(LocalDateTime data, BigDecimal minImporto, BigDecimal maxImporto, Pageable pageable);
 }

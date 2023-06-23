@@ -14,8 +14,8 @@ import java.util.UUID;
 @Getter
 @Setter
 public class FatturaCreatePayload {
-    @NotBlank(message = "Il numero è obbligatorio")
-    private int numero;
+    @NotNull(message = "Il numero è obbligatorio")
+    private Integer numero;
 
     @NotNull(message = "La data è obbligatoria")
     private LocalDateTime data;
@@ -30,11 +30,11 @@ public class FatturaCreatePayload {
     public FatturaCreatePayload() {
     }
 
-    public int getNumero() {
+    public Integer getNumero() {
         return numero;
     }
 
-    public void setNumero(int numero) {
+    public void setNumero(Integer numero) {
         this.numero = numero;
     }
 
