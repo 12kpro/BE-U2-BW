@@ -33,16 +33,31 @@ public class ClienteService {
     @Autowired
     TipoClienteService tipoClienteService;
     public Cliente create(ClientiCreatePayloads c) {
+        Indirizzo io = null;
         clienteRepository.findByEmail(c.getEmail()).ifPresent(user -> {
             throw new BadRequestException("Cliente " + c.getEmail() + " already in use!");
         });
-        //TODO creare oggetto cliente da payload
-        //TODO creare costruttori per campi null
         Indirizzo il = indirizzoService.findById(c.getIndirizzoSedeLegale());
-        Indirizzo io = indirizzoService.findById(c.getIndirizzoSedeOperativa());
+        if(c.getIndirizzoSedeOperativa() != null){
+            io = indirizzoService.findById(c.getIndirizzoSedeOperativa());
+        }
         TipoCliente tc = tipoClienteService.findById(c.getTipoCliente());
 
-        Cliente newCliente = new Cliente();
+        Cliente newCliente = new Cliente(
+                c.getNomeContatto(),
+                c.getCognomeContatto(),
+                c.getEmailContatto(),
+                c.getDataInserimento(),
+                c.getDataUltimoContatto(),
+                c.getEmail(),
+                c.getPartitaIva(),
+                c.getPec(),
+                c.getRagioneSociale(),
+                c.getTelefono(),
+                c.getTelefonoContatto(),
+                tc,
+                il,
+                io);
         return clienteRepository.save(newCliente);
     }
 
@@ -67,64 +82,38 @@ public class ClienteService {
         }
         return clienteRepository.findByDataInserimentoAndRagioneSocialeIgnoreCaseAndFatturatoAnnualeAndDataUltimoContattoAndIndirizzoSedeLegale_Comune_Provincia(body.getDataInserimento(), body.getRagioneSociale(), body.getFatturatoAnnuale(),body.getDataUltimoContatto(), provincia,pageable);
     }
-//    public Page<Cliente> findByFatturatoAnnuale(Double fatturato, int page, int size, String sortBy) {
-//        if (size < 0)
-//            size = 10;
-//        if (size > 100)
-//            size = 100;
-//        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-//
-//        return clienteRepository.findByFatturatoAnnuale(fatturato,pageable);
-//    }
-//    public Page<Cliente> findByDataInserimento(LocalDate dataInserimento, int page, int size, String sortBy) {
-//        if (size < 0)
-//            size = 10;
-//        if (size > 100)
-//            size = 100;
-//        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-//
-//        return clienteRepository.findByDataInserimento(dataInserimento,pageable);
-//    }
-//    public Page<Cliente> findByRagioneSocialeContainsIgnoreCase(String nome, int page, int size, String sortBy) {
-//        if (size < 0)
-//            size = 10;
-//        if (size > 100)
-//            size = 100;
-//        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-//
-//        return clienteRepository.findByRagioneSocialeContainsIgnoreCase(nome,pageable);
-//    }
-//    public Page<Cliente> findByDataUltimoContatto(LocalDate dataContatto,int page, int size, String sortBy) {
-//        if (size < 0)
-//            size = 10;
-//        if (size > 100)
-//            size = 100;
-//        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-//
-//        return clienteRepository.findByDataUltimoContatto(dataContatto,pageable);
-//    }
-//    public Page<Cliente> findByIndirizzoSedeLegale_Comune_Provincia(Integer provinciaId,int page, int size, String sortBy) {
-//        if (size < 0)
-//            size = 10;
-//        if (size > 100)
-//            size = 100;
-//        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-//        Provincia p = provinceService.findById(provinciaId);
-//        return clienteRepository.findByIndirizzoSedeLegale_Comune_Provincia(p,pageable);
-//    }
     public Cliente findById(UUID id) throws NotFoundException {
-        return clienteRepository.findById(id).orElseThrow(() -> new NotFoundException("Utete con Id:" + id + "non trovato!!"));
+        return clienteRepository.findById(id).orElseThrow(() -> new NotFoundException("Cliente con Id:" + id + "non trovato!!"));
     }
 
     public Cliente findByEmail(String email) throws NotFoundException {
-        return clienteRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("Utete con email:" + email + "non trovato!!"));
+        return clienteRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("Cliente con email:" + email + "non trovato!!"));
     }
 
-    public Cliente findByIdAndUpdate(UUID id, Cliente c) throws NotFoundException {
+    public Cliente findByIdAndUpdate(UUID id, ClientiCreatePayloads c) throws NotFoundException {
         Cliente found = this.findById(id);
-        //TODO implementare i setters
+        Indirizzo io = null;
+        if(c.getIndirizzoSedeOperativa() != null){
+            io = indirizzoService.findById(c.getIndirizzoSedeOperativa());
+        }
+        Indirizzo il = indirizzoService.findById(c.getIndirizzoSedeLegale());
+        TipoCliente tc = tipoClienteService.findById(c.getTipoCliente());
+
         found.setId(id);
         found.setEmail(c.getEmail());
+        found.setDataInserimento(c.getDataInserimento());
+        found.setCognomeContatto(c.getCognomeContatto());
+        found.setPec(c.getPec());
+        found.setDataUltimoContatto(c.getDataUltimoContatto());
+        found.setTelefono(c.getTelefono());
+        found.setTelefonoContatto(c.getTelefonoContatto());
+        found.setNomeContatto(c.getNomeContatto());
+        found.setEmailContatto(c.getEmailContatto());
+        found.setPartitaIva(c.getPartitaIva());
+        found.setRagioneSociale(c.getRagioneSociale());
+        found.setIndirizzoSedeOperativa(io);
+        found.setIndirizzoSedeLegale(il);
+        found.setTipoCliente(tc);
 
         return clienteRepository.save(found);
     }
@@ -133,55 +122,4 @@ public class ClienteService {
         Cliente found = this.findById(id);
         clienteRepository.delete(found);
     }
-    
-    
-    
-    
-    
-//    @Autowired
-//    private final ClienteRepository clienteRepository;
-//    @Autowired
-//    ProvinceService provinceService;
-//    public clienteRepository(ClienteRepository clienteRepository) {
-//        this.clienteRepository = clienteRepository;
-//    }
-//
-//    public Cliente findById(UUID id) {
-//        return clienteRepository.findById(id).orElseThrow(() -> new NotFoundException("Cliente con Id:" + id + "non trovato!!"));
-//    }
-//    public Page<Cliente> findByNomeContatto(String nomeContatto, int pageNumber, int pageSize) {
-//        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-//        return clienteRepository.findByNomeContatto(nomeContatto, pageable);
-//    }
-//
-//    public Page<Cliente> findByEmail(String email, int pageNumber, int pageSize) {
-//        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-//        return clienteRepository.findByEmail(email, pageable);
-//    }
-//
-//    public Page<Cliente> filtraClientiPerFatturatoAnnuo( Double fatturato, int pageNumber, int pageSize) {
-//        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-//        return clienteRepository.findByFatturatoAnnuale(fatturato, pageable);
-//    }
-//
-//    public Page<Cliente> findByInserimento(LocalDate dataInserimento, int pageNumber, int pageSize) {
-//        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-//        return clienteRepository.findByDataInserimento(dataInserimento, pageable);
-//    }
-//
-//    public Page<Cliente> searchByPartName(String partName, int pageNumber, int pageSize) {
-//        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-//        return clienteRepository.findByNomeContattoContainsIgnoreCase(partName, pageable);
-//    }
-//
-//    public Cliente findByUltimocontatto(LocalDate ultimoContatto ) {
-//        return clienteRepository.findByDataUltimoContatto(ultimoContatto).orElseThrow(() -> new NotFoundException("Cliente non trovato!!"));
-//    }
-//
-//    public Page<Cliente> searchByProvincia(Integer provinciaId, int pageNumber, int pageSize) {
-//        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-//        Provincia p = provinceService.findById(provinciaId);
-//        return clienteRepository.findByIndirizzoSedeLegale_Comune_Provincia(p, pageable);
-//    }
-
 }

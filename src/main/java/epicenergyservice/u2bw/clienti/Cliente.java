@@ -77,6 +77,23 @@ public class Cliente {
     @ManyToOne
     @JoinColumn(name = "indirizzo_sede_operativa_id")
     private Indirizzo indirizzoSedeOperativa;
+
+    public Cliente(String nomeContatto, String cognomeContatto, String emailContatto, LocalDate dataInserimento, LocalDate dataUltimoContatto, String email, String partitaIva, String pec, String ragioneSociale, String telefono, String telefonoContatto, TipoCliente tipoCliente, Indirizzo indirizzoSedeLegale, Indirizzo indirizzoSedeOperativa) {
+        this.nomeContatto = nomeContatto;
+        this.cognomeContatto = cognomeContatto;
+        this.emailContatto = emailContatto;
+        this.dataInserimento = dataInserimento;
+        this.dataUltimoContatto = dataUltimoContatto;
+        this.email = email;
+        this.partitaIva = partitaIva;
+        this.pec = pec;
+        this.ragioneSociale = ragioneSociale;
+        this.telefono = telefono;
+        this.telefonoContatto = telefonoContatto;
+        this.tipoCliente = tipoCliente;
+        this.indirizzoSedeLegale = indirizzoSedeLegale;
+        this.indirizzoSedeOperativa = indirizzoSedeOperativa;
+    }
 }
 
 
