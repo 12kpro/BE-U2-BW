@@ -6,7 +6,6 @@ import epicenergyservice.u2bw.exceptions.NotFoundException;
 import epicenergyservice.u2bw.fatture.Fattura;
 import epicenergyservice.u2bw.fatture.StatoFattura;
 import epicenergyservice.u2bw.fatture.payloads.FatturaCreatePayload;
-import epicenergyservice.u2bw.fatture.payloads.FatturaGetPayload;
 import epicenergyservice.u2bw.fatture.payloads.FatturaUpdatePayload;
 import epicenergyservice.u2bw.fatture.repositories.FatturaRepository;
 import epicenergyservice.u2bw.indirizzi.Provincia;
@@ -18,6 +17,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -63,7 +64,17 @@ public class FatturaService {
 
         return fatturaRepository.findAll(pageable);
     }
-    public Page<Fattura> findByParams(FatturaGetPayload body, int page, int size, String sortBy) {
+    public Page<Fattura> findByParams(
+          int page,
+          int size,
+          String sortBy,
+          LocalDateTime data,
+          Integer anno,
+          Double minImporto,
+          Double maxImporto,
+          UUID clienteId,
+          UUID statoId
+    ) {
         Provincia provincia = null;
         if (size < 0)
             size = 10;
@@ -72,14 +83,13 @@ public class FatturaService {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
 
         return fatturaRepository.findByDataAndAnnoAndImportoBetweenAndCliente_IdAndStatoFattura_Id(
-                body.getData(),
-                body.getAnno(),
-                body.getMinImporto(),
-                body.getMaxImporto(),
-                body.getClienteId(),
-                body.getStatoId(),
-                pageable
-
+        data,
+        anno,
+        minImporto,
+        maxImporto,
+        clienteId,
+        statoId,
+        pageable
         );
     }
     public Fattura findById(UUID id) throws NotFoundException {

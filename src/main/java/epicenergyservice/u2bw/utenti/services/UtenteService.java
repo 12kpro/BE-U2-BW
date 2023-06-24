@@ -54,7 +54,7 @@ public class UtenteService {
         return utenteRepo.findByEmail(email).orElseThrow(() -> new NotFoundException("Utete con email:" + email + "non trovato!!"));
     }
     public Utente findByUserName(String username) throws NotFoundException {
-        return utenteRepo.findByUsername(username).orElseThrow(() -> new NotFoundException("Utete:" + username + "non trovato!!"));
+        return utenteRepo.findByUsername(username).orElseThrow(() -> new NotFoundException("Utete:" + username + " non trovato!!"));
     }
 
     public Utente findByIdAndUpdate(UUID id, Utente u) throws NotFoundException {

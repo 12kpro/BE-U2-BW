@@ -41,7 +41,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> auth.requestMatchers("/clienti/**").authenticated());
 
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
+        http.addFilterBefore(exceptionHandlerFilter, JWTAuthFilter.class);
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();

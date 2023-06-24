@@ -2,7 +2,6 @@ package epicenergyservice.u2bw.clienti.services;
 
 import epicenergyservice.u2bw.clienti.Cliente;
 import epicenergyservice.u2bw.clienti.TipoCliente;
-import epicenergyservice.u2bw.clienti.payloads.ClienteGetPayload;
 import epicenergyservice.u2bw.clienti.payloads.ClientiCreatePayloads;
 import epicenergyservice.u2bw.clienti.repositories.ClienteRepository;
 import epicenergyservice.u2bw.exceptions.BadRequestException;
@@ -17,6 +16,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
@@ -68,17 +69,29 @@ public class ClienteService {
 
         return clienteRepository.findAll(pageable);
     }
-    public Page<Cliente> findByParams(ClienteGetPayload body, int page, int size, String sortBy) {
+    public Page<Cliente> findByParams(int page, int size, String sortBy,
+               LocalDate dataInserimento,
+               LocalDate dataUltimoContatto,
+               Double fatturatoAnnuale,
+               String ragioneSociale,
+               Integer provinciaSedeLegaleId
+    ) {
         Provincia provincia = null;
         if (size < 0)
             size = 10;
         if (size > 100)
             size = 100;
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        if(body.getProvinciaSedeLegaleId() != null){
-           provincia = provinceService.findById(body.getProvinciaSedeLegaleId());
+        if(provinciaSedeLegaleId != null){
+           provincia = provinceService.findById(provinciaSedeLegaleId);
         }
-        return clienteRepository.findByDataInserimentoAndRagioneSocialeIgnoreCaseAndFatturatoAnnualeAndDataUltimoContattoAndIndirizzoSedeLegale_Comune_Provincia(body.getDataInserimento(), body.getRagioneSociale(), body.getFatturatoAnnuale(),body.getDataUltimoContatto(), provincia,pageable);
+        return clienteRepository.findByDataInserimentoAndRagioneSocialeIgnoreCaseAndFatturatoAnnualeAndDataUltimoContattoAndIndirizzoSedeLegale_Comune_Provincia(
+                dataInserimento,
+                ragioneSociale,
+                fatturatoAnnuale,
+                dataUltimoContatto,
+                provincia,
+                pageable);
     }
     public Cliente findById(UUID id) throws NotFoundException {
         return clienteRepository.findById(id).orElseThrow(() -> new NotFoundException("Cliente con Id:" + id + "non trovato!!"));

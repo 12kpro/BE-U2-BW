@@ -3,6 +3,7 @@ package epicenergyservice.u2bw.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -41,7 +42,13 @@ public class ExceptionsHandler {
 
         return new ResponseEntity<ErrorsPayload>(payload, HttpStatus.UNAUTHORIZED);
     }
+    @ExceptionHandler({AccessDeniedException.class})
+    public ResponseEntity<ErrorsPayload> handleAccessDenied(AccessDeniedException  e) {
 
+        ErrorsPayload payload = new ErrorsPayload(e.getMessage(), new Date(), 401);
+
+        return new ResponseEntity<ErrorsPayload>(payload, HttpStatus.UNAUTHORIZED);
+    }
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ErrorsPayload> handleNotFound(NotFoundException e) {
 

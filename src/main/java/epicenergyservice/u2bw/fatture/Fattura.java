@@ -17,6 +17,7 @@ import java.util.UUID;
 public class Fattura {
     @Id
     private UUID id = UUID.randomUUID();
+    //TODO verificare
     @Formula("EXTRACT(YEAR FROM data)")
     private Integer anno;
     @Column(columnDefinition = "timestamp without time zone")
